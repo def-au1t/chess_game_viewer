@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+{% block nav-index %}
+    <a class="nav-link active" href="{% url "index" %}">Lista partii </a>
+{% endblock %}
+
+{% block content %}
+    <h1>Lista partii</h1>
+    <div class="list-group">
+    {% for game in games %}
+        <a class="list-group-item list-group-item-action " href="{% url 'game' game.id %}">
+        <div class="row col">
+            <div class="col-12 col-md-8">
+                <div class="">
+                    <b><span class="badge badge-secondary">{% if game.result == 0 %}0:1{% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
+                        {{game.white_player.first_name}} {{ game.white_player.last_name }}
+                        - {{game.black_player.first_name}} {{ game.black_player.last_name }} </b>
+                </div>
+
+                <div class=""> {{ game.preview}}</div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class=""><b>{{ game.tournament.name}}</b> </div>
+                <div class=""><b>{{ game.tournament.date}} {% if game.tournament.city != None %}- {{  game.tournament.city}}{% endif %}</b> </div>
+            </div>
+
+        </div>
+        </a>
+    {%  endfor %}
+
+
+{% endblock %}

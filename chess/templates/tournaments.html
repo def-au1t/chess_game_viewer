@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block nav-tournaments %}
+    <a class="nav-link active" href="{% url "tournaments" %}">Turnieje</a>
+{% endblock %}
+
+{% block content %}
+    <h1>Lista turniejów</h1>
+    {% for tournament in tournaments %}
+        <a class="list-group-item list-group-item-action " href="{%  url 'tournament' tournament.id %}?src=t">
+        <div class="row col">
+            <div class="col-12 col-md-8">
+                <div class="">
+                    <b>{{ tournament.name }}</b>
+                </div>
+
+                <div class=""> {{ game.preview}}</div>
+            </div>
+                <div class=""><b></b> </div>
+            <div class="col-12 col-md-2">
+                <div class=""><b>{% if tournament.city != None %}- {{  game.tournament.city}}{% endif %}</b> </div>
+            </div>
+            <div class="col-12 col-md-2">
+                <div class=""><b>{{ tournament.date}}</b> </div>
+            </div>
+
+        </div>
+        </a>
+    {%  endfor %}
+
+
+{% endblock %}

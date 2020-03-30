@@ -1,0 +1,20 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+    <h1>Partia </h1>
+        <div><strong>Białe:</strong> {{ game.white_player.first_name }} {{ game.white_player.last_name }}
+            <strong>Czarne:</strong> {{ game.black_player.first_name }} {{ game.black_player.last_name }}
+            <strong>Wynik:</strong> {{ game.result }}
+        </div>
+        <div style="background: lightgray">{{ game.pgn.pgn }}</div>
+
+    {%  if source != '' %}
+    <div class="text-center">
+        <a class="btn btn-info m-3" href="{% url 'tournament' source %}">Powrót do turnieju</a>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <a class="btn btn-info m-3" href="{% url 'index' %}">Powrót</a>
+    </div>
+    {% endif %}
+{% endblock %}
