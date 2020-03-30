@@ -1,0 +1,20 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ tournament.name }} </h1>
+    <h4>Data: {{ tournament.date }}</h4>
+        {% for game in games %}
+            <div><strong>Białe:</strong> {{ game.white_player.first_name }} {{ game.white_player.last_name }}
+                <strong>Czarne:</strong>, {{ game.black_player.first_name }} {{ game.black_player.last_name }}
+                <strong>Wynik:</strong>, {{ game.result }}
+            </div>
+            <div style="background: lightgray">{{ game.preview }}</div>
+            <a href="{% url 'game' game.id %}?tid={{tournament.id}}">Link</a>
+        {%  endfor %}
+    {%  if source == 't' %}
+    <div><a class="btn btn-info" href="{% url 'tournaments' %}">Powrót do listy turniejów</a></div>
+    {% else %}
+    <div><a class="btn btn-info" href="{% url 'index' %}">Powrót do listy partii</a></div>
+    {% endif %}
+
+    {% endblock %}

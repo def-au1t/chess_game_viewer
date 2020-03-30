@@ -1,8 +1,20 @@
-<h1>Lista partii</h1>
-{% for game in games %}
-    <div><strong>Białe:</strong> {{ game.white_name }},
-        <strong>Czarne:</strong>, {{ game.black_name }},
-        <strong>Wynik:</strong>, {{ game.result }},
-    </div>
-    <div style="background: lightgray">{{ game.pgn }}</div>
-{%  endfor %}
+{% extends 'base.html' %}
+
+
+{% block nav-index %}
+    <a class="nav-link active" href="{% url "index" %}">Lista partii </a>
+{% endblock %}
+
+{% block content %}
+    <h1>Lista partii</h1>
+    {% for game in games %}
+        <div><strong>Białe:</strong> {{ game.white_name }},
+            <strong>Czarne:</strong>, {{ game.black_name }},
+            <strong>Wynik:</strong>, {{ game.result }},
+        </div>
+        <div style="background: lightgray">{{ game.preview }}</div>
+        <a href="{% url 'game' game.id %}">Link</a>
+    {%  endfor %}
+
+
+{% endblock %}

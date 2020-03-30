@@ -8,6 +8,7 @@ class Tournament(models.Model):
     time = models.DecimalField(max_digits=5, decimal_places=1, default=0, null=True)
     time_add = models.DecimalField(max_digits=5, decimal_places=1, default=0, null=True)
     date = models.DateField(null=True)
+    city = models.CharField(max_length=50, null=True)
 
 
 class Player(models.Model):
@@ -16,9 +17,14 @@ class Player(models.Model):
     club = models.CharField(max_length=50, null=True)
 
 
-class Game(models.Model):
-    white_player_id = models.ForeignKey(Player, related_name='white',  on_delete=models.CASCADE)
-    black_player_id = models.ForeignKey(Player, related_name='black', on_delete=models.CASCADE)
-    result = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    tournament_id = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True)
+class PGN(models.Model):
     pgn = models.TextField(max_length=5000)
+
+
+class Game(models.Model):
+    white_player = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE)
+    black_player = models.ForeignKey(Player, related_name='black', on_delete=models.CASCADE)
+    result = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True)
+    pgn = models.ForeignKey(PGN, on_delete=models.CASCADE, null=True)
+    preview = models.TextField(max_length=100, null=True)
