@@ -4,7 +4,7 @@
     <h1>{{ tournament.name }} </h1>
     <h4>Data: {{ tournament.date }}</h4>
         {% for game in games %}
-        <a class="list-group-item list-group-item-action " href="{% url 'game' game.id %}">
+        <a class="list-group-item list-group-item-action " href="{% url 'game' game.id %}?tid={{ tournament.id }}">
         <div class="row col">
             <div class="col-12 col-md-8">
                 <div class="">
@@ -23,10 +23,7 @@
         </div>
         </a>
         {%  endfor %}
-    {%  if source == 't' %}
     <div class="text-center"><a class="btn btn-info m-3" href="{% url 'tournaments' %}">Powrót do listy turniejów</a></div>
-    {% else %}
-    <div class="text-center"><a class="btn btn-info m-3" href="{% url 'index' %}">Powrót do listy partii</a></div>
-    {% endif %}
+
 
     {% endblock %}

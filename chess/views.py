@@ -23,8 +23,7 @@ def tournaments(request):
 
 
 def tournament(request, tournament_id):
-    source = request.GET.get('src', '')
     tournament = Tournament.objects.get(id=tournament_id)
     games = Game.objects.filter(tournament_id=tournament.id)
-    context = {"tournament": tournament, 'games': games, 'source': source}
+    context = {"tournament": tournament, 'games': games}
     return render(request, 'tournament.html', context)
