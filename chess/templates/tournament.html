@@ -1,10 +1,10 @@
 {%  extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ tournament.name }} </h1>
-    <h4>Data: {{ tournament.date }}</h4>
-        {% for game in games %}
-        <a class="list-group-item list-group-item-action " href="{% url 'game' game.id %}?tid={{ tournament.id }}">
+    <h1>{{ object.name }} </h1>
+    <h4>Data: {{ object.date }}</h4>
+        {% for game in object_list %}
+        <a class="list-group-item list-group-item-action " href="{% url 'chess_viewer:game' game.id %}?tid={{ object.id }}">
         <div class="row col">
             <div class="col-12 col-md-8">
                 <div class="">
@@ -13,17 +13,18 @@
                         - {{game.black_player.first_name}} {{ game.black_player.last_name }} </b>
                 </div>
 
-                <div class=""> {{ game.preview}}</div>
+                <div class=""> {{ game.preview }}</div>
             </div>
             <div class="col-12 col-md-4">
-                <div class=""><b>{{ game.tournament.name}}</b> </div>
-                <div class=""><b>{{ game.tournament.date}} {% if game.tournament.city != None %}- {{  game.tournament.city}}{% endif %}</b> </div>
+                <div class=""><b>{{ game.object.name }}</b> </div>
+                <div class=""><b>{{ game.object.date }} {% if game.object.city != None %}- {{  game.object.city}}{% endif %}</b> </div>
             </div>
 
         </div>
         </a>
         {%  endfor %}
-    <div class="text-center"><a class="btn btn-info m-3" href="{% url 'tournaments' %}">Powrót do listy turniejów</a></div>
+        {% include "pagination.html" %}
+    <div class="text-center"><a class="btn btn-info m-3" href="{{ original_referer }}">Powrót do listy turniejów</a></div>
 
 
     {% endblock %}

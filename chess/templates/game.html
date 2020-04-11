@@ -2,12 +2,12 @@
 
 {% block content %}
     <h1>Partia </h1>
-        <div><strong>Białe:</strong> {{ game.white_player.first_name }} {{ game.white_player.last_name }}
-            <strong>Czarne:</strong> {{ game.black_player.first_name }} {{ game.black_player.last_name }}
-            <strong>Wynik:</strong> {{ game.result }}
+        <div><strong>Białe:</strong> {{ object.white_player.first_name }} {{ object.white_player.last_name }}
+            <strong>Czarne:</strong> {{ object.black_player.first_name }} {{ object.black_player.last_name }}
+            <strong>Wynik:</strong> {{ object.result }}
         </div>
 
-        <iframe height='720' width='600' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://pgn4web-board.casaschi.net/?delay=1000&amp;
+<iframe height='720' width='600' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://pgn4web-board.casaschi.net/?delay=1000&amp;
 pieceFont=uscf&amp;
 pieceSize=40&amp;
 squareSize=50&amp;
@@ -30,13 +30,13 @@ pgnText={{ game.pgn.pgn }}'
 
         </iframe>
 
-    {%  if source != '' %}
+    {%  if 'tournament' in request.META.HTTP_REFERER %}
     <div class="text-center">
-        <a class="btn btn-info m-3" href="{% url 'tournament' source %}">Powrót do turnieju</a>
+        <a class="btn btn-info m-3" href="{{ request.META.HTTP_REFERER }}">Powrót do turnieju</a>
     </div>
     {% else %}
     <div class="text-center">
-        <a class="btn btn-info m-3" href="{% url 'index' %}">Powrót</a>
+        <a class="btn btn-info m-3" href="{{ request.META.HTTP_REFERER }}">Powrót do listy partii</a>
     </div>
     {% endif %}
 
@@ -48,4 +48,5 @@ pgnText={{ game.pgn.pgn }}'
 {#        pgnv = pgnPrint("board1", {pgn: pgn1});#}
 {#        pgnv = pgnEdit("board2", {pgn: "5... Be7 6. Re1 O-O", position: "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 3 5"});#}
 {#    </script>#}
+
 {% endblock %}
