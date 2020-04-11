@@ -1,11 +1,10 @@
 from django.contrib import admin
 from django.urls import include, path
-
-from . import views
+from .views import GamesList, GameDetails, TournamentsList, TournamentDetails
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('game/<int:game_id>', views.game, name='game'),
-    path('tournaments', views.tournaments, name='tournaments'),
-    path('tournament/<int:tournament_id>', views.tournament, name='tournament'),
+    path('', GamesList.as_view(), name='index'),
+    path('game/<int:pk>', GameDetails.as_view(), name='game'),
+    path('tournaments', TournamentsList.as_view(), name='tournaments'),
+    path('tournament/<int:pk>', TournamentDetails.as_view(), name='tournament'),
 ]

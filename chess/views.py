@@ -1,29 +1,36 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from chess.models import Game, Tournament, Player, PGN
+from django.views.generic import ListView, DetailView
+from chess.models import Tournament, Game
+from django.views.generic.list import MultipleObjectMixin
 
 
-def index(request):
-    games = Game.objects.all()
-    context = {'games': games}
-    return render(request, 'index.html', context)
+class TournamentsList(ListView):
+    model = Tournament
+    template_name = "../templates/tournaments.html"
+    paginate_by = 10
+    ordering = ['-date']
 
 
-def game(request, game_id):
-    source = request.GET.get('tid', '')
-    game = Game.objects.get(id=game_id)
-    context = {'game': game, 'source': source}
-    return render(request, 'game.html', context)
+class TournamentDetails(DetailView, MultipleObjectMixin):
+    model = Tournament
+    template_name = "../templates/tournament.html"
+    paginate_by = 1  # TODO: change this
+    ordering = ['-id']
+
+    def get_context_data(self, **kwargs):
+        self.request.session['last_tournament_page'] = self.request.META.get('HTTP_REFERER')
+        object_list = Game.objects.filter(tournament_id=self.object.id).order_by("-id")
+        context = super(TournamentDetails, self).get_context_data(object_list=object_list, **kwargs)
+        return context
 
 
-def tournaments(request):
-    tournaments_list = Tournament.objects.all()
-    context = {"tournaments": tournaments_list}
-    return render(request, 'tournaments.html', context)
+class GamesList(ListView):
+    model = Game
+    template_name = "../templates/index.html"
+    paginate_by = 5
+    ordering = ['id']
 
 
-def tournament(request, tournament_id):
-    tournament = Tournament.objects.get(id=tournament_id)
-    games = Game.objects.filter(tournament_id=tournament.id)
-    context = {"tournament": tournament, 'games': games}
-    return render(request, 'tournament.html', context)
+class GameDetails(DetailView):
+    model = Game
+    template_name = "../templates/game.html"
+
