@@ -9,7 +9,7 @@
     <h1>Lista partii</h1>
     <div class="list-group">
         {% for game in object_list %}
-            <a class="list-group-item list-group-item-action " href="{% url 'chess_viewer:game' game.id %}">
+            <div class="list-group-item list-group-item-action single-game clickable" single-game-id="{{ game.id }}">
                 <div class="row col">
                     <div class="col-12 col-md-8">
                         <div class="">
@@ -28,9 +28,66 @@
                     </div>
 
                 </div>
-            </a>
+            </div>
         {% endfor %}
     </div>
     {% include "pagination.html" %}
 
+{% endblock %}
+
+{% block extrascripts %}
+    <script defer>
+        document.querySelectorAll('.single-game').forEach(item => {
+            item.addEventListener('click', event => {
+                event.preventDefault();
+                event.stopPropagation();
+                loadGameDetails(event)
+            })
+        })
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length,c.length);
+                }
+            }
+            return "";
+        }
+
+        function loadGameDetails(event) {
+            let target = event.target || event.srcElement || event;
+            let game_id = target.getAttribute("single-game-id");
+            if(game_id == null){
+                // TODO: error handling here, maybe bootsrap error bar or sth like this
+                return;
+            }
+            const options = {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'include',
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            }
+            fetch("/game_details/" + game_id, options).then(data => {
+                return data.json()
+            }).then(data => {
+                console.log(data)
+                //fill template here
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    </script>
 {% endblock %}
