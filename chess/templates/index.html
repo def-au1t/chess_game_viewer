@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 
 {% block nav-index %}
@@ -31,63 +32,42 @@
             </div>
         {% endfor %}
     </div>
+    <div id="output_div">
+        {# TODO: create template here #}
+    </div>
     {% include "pagination.html" %}
 
 {% endblock %}
 
 {% block extrascripts %}
+    <script src="{% static 'js/dynamicPageCommon.js' %}"></script>
     <script defer>
-        document.querySelectorAll('.single-game').forEach(item => {
-            item.addEventListener('click', event => {
-                event.preventDefault();
-                event.stopPropagation();
-                loadGameDetails(event)
-            })
-        })
+        setTimeout(() => {
+            setHooks('.single-game', success_handler, error_handler)
+        }, 100);
 
-        function getCookie(cname) {
-            let name = cname + "=";
-            let ca = document.cookie.split(';');
-            for(let i = 0; i <ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length,c.length);
-                }
-            }
-            return "";
+        function success_handler(data){
+            const black_player = data['black_player']
+            const white_player = data['white_player']
+            const tournament = data['tournament']
+            const game = {'id': data['id'], 'preview': data['preview'], 'result': data['result']}
+            console.log(black_player)
+            console.log(white_player)
+            console.log(tournament)
+            console.log(game)
+
+            // TODO: instead of this, fill prepared template with data
+            let output_div = document.querySelector('#output_div');
+            let p = document.createElement('pre')
+            p.textContent = JSON.stringify(data, null, 4);
+            output_div.appendChild(p)
         }
 
-        function loadGameDetails(event) {
-            let target = event.target || event.srcElement || event;
-            let game_id = target.getAttribute("single-game-id");
-            if(game_id == null){
-                // TODO: error handling here, maybe bootsrap error bar or sth like this
-                return;
-            }
-            const options = {
-                method: 'GET',
-                mode: 'cors',
-                cache: 'no-cache',
-                credentials: 'include',
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer',
-                headers: {
-                    "X-CSRFToken": getCookie("csrftoken"),
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                }
-            }
-            fetch("/game_details/" + game_id, options).then(data => {
-                return data.json()
-            }).then(data => {
-                console.log(data)
-                //fill template here
-            }).catch(err => {
-                console.log(err)
-            })
+        function error_handler(error) {
+            console.error(error)
+            // TODO: error handling here, maybe bootsrap error bar or sth like this
+            // https://www.tutorialrepublic.com/snippets/preview.php?topic=bootstrap&file=elegant-error-modal
         }
+
     </script>
 {% endblock %}

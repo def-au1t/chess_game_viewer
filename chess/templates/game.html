@@ -30,6 +30,7 @@ pgnText={{ game.pgn.pgn }}'
 
         </iframe>
 
+{#  TODO: remove this after converting  to dynamic page   #}
     {%  if 'tournament' in request.META.HTTP_REFERER %}
     <div class="text-center">
         <a class="btn btn-info m-3" href="{{ request.META.HTTP_REFERER }}">Powrót do turnieju</a>
