@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 
 {% block nav-index %}
@@ -9,7 +10,7 @@
     <h1>Lista partii</h1>
     <div class="list-group">
         {% for game in object_list %}
-            <a class="list-group-item list-group-item-action " href="{% url 'chess_viewer:game' game.id %}">
+            <div class="list-group-item list-group-item-action single-game clickable" single-game-id="{{ game.id }}">
                 <div class="row col">
                     <div class="col-12 col-md-8">
                         <div class="">
@@ -28,9 +29,45 @@
                     </div>
 
                 </div>
-            </a>
+            </div>
         {% endfor %}
+    </div>
+    <div id="output_div">
+        {# TODO: create template here #}
     </div>
     {% include "pagination.html" %}
 
+{% endblock %}
+
+{% block extrascripts %}
+    <script src="{% static 'js/dynamicPageCommon.js' %}"></script>
+    <script defer>
+        setTimeout(() => {
+            setHooks('.single-game', success_handler, error_handler)
+        }, 100);
+
+        function success_handler(data){
+            const black_player = data['black_player']
+            const white_player = data['white_player']
+            const tournament = data['tournament']
+            const game = {'id': data['id'], 'preview': data['preview'], 'result': data['result']}
+            console.log(black_player)
+            console.log(white_player)
+            console.log(tournament)
+            console.log(game)
+
+            // TODO: instead of this, fill prepared template with data
+            let output_div = document.querySelector('#output_div');
+            let p = document.createElement('pre')
+            p.textContent = JSON.stringify(data, null, 4);
+            output_div.appendChild(p)
+        }
+
+        function error_handler(error) {
+            console.error(error)
+            // TODO: error handling here, maybe bootsrap error bar or sth like this
+            // https://www.tutorialrepublic.com/snippets/preview.php?topic=bootstrap&file=elegant-error-modal
+        }
+
+    </script>
 {% endblock %}
