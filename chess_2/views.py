@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.list import MultipleObjectMixin
 
-from chess.models import Tournament, Game
+from chess_2.models import Tournament, Game
 
 
 class TournamentsList(ListView):

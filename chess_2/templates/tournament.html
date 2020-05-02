@@ -24,7 +24,7 @@
         </a>
         {%  endfor %}
         {% include "pagination.html" %}
-    <div class="text-center"><a class="btn btn-info m-3" href="/">Powrót do listy turniejów (nie dziala)</a></div>
+    <div class="text-center"><a class="btn btn-info m-3" href="{% url 'chess_viewer:tournaments' %}">Powrót do listy turniejów (nie dziala)</a></div>
 
 
     {% endblock %}
