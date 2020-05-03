@@ -1,6 +1,13 @@
 from django.db import models
 
 
+class Parse(models.Model):
+    upload = models.FileField(upload_to="")
+
+    def __str__(self):
+        return '%s' % (self.upload)
+
+
 class Tournament(models.Model):
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=1, null=True)
@@ -27,3 +34,4 @@ class Game(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True)
     pgn = models.ForeignKey(PGN, on_delete=models.CASCADE, null=True)
     preview = models.TextField(max_length=100, null=True)
+
