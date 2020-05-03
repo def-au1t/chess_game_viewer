@@ -6,6 +6,7 @@ from .forms import PgnForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.sessions.middleware import SessionMiddleware
+from .getdata import get_player_data
 
 
 class TournamentsList(ListView):
@@ -48,6 +49,10 @@ def parse_pgn(request):
         formset = PgnFormSet(request.POST)
 
         if formset.is_valid():
+            for f in formset:
+                cd = f.cleaned_data
+                data = cd.get('pgn')
+                get_player_data(data)
             formset.save()
             request.session['pgn'] = ""
             return redirect('/admin/chess_app/pgn')

@@ -1,4 +1,7 @@
+import io
 import chess.pgn
+
+from chess_app.models import Player
 
 
 def get_data(file):
@@ -24,3 +27,15 @@ def get_data(file):
     # meta['camera'] =str( tags['Image Model'].values)
 
     return meta
+
+
+def get_player_data(data):
+    game = chess.pgn.read_game(io.StringIO(data))
+    name = game.headers["White"].split(',')
+    last_name = name[0]
+    first_name = name[1]
+    obj, created = Player.objects.get_or_create(first_name=first_name, last_name=last_name)
+    name = game.headers["Black"].split(',')
+    last_name = name[0]
+    first_name = name[1]
+    obj, created = Player.objects.get_or_create(first_name=first_name, last_name=last_name)

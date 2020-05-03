@@ -4,12 +4,12 @@ from django.contrib import admin
 from .getdata import get_data
 from .models import Game, Player, Tournament, PGN, Parse
 from django.shortcuts import redirect
-
 from django.contrib.sessions.middleware import SessionMiddleware
 
 admin.site.register(Game)
-
 admin.site.register(Tournament)
+admin.site.register(PGN)
+admin.site.register(Player)
 
 
 class PgnAdd(admin.ModelAdmin):
@@ -26,6 +26,4 @@ class PgnAdd(admin.ModelAdmin):
         request.session['pgn'] = pgns
 
 
-admin.site.register(PGN)
-admin.site.register(Player)
 admin.site.register(Parse, PgnAdd)
