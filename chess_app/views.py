@@ -5,6 +5,7 @@ from .models import Tournament, Game, PGN
 from .forms import PgnForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.sessions.middleware import SessionMiddleware
 
 
 class TournamentsList(ListView):
@@ -38,17 +39,9 @@ class GameDetails(DetailView):
     template_name = "../templates/game.html"
 
 
-pgns = []
-
-
-def set_pgns(pgn):
-    global pgns
-    pgns = pgn
-
-
 @user_passes_test(lambda u: u.is_superuser)
 def parse_pgn(request):
-    global pgns
+    pgns = request.session.get('pgn')
     PgnFormSet = modelformset_factory(PGN, fields=('pgn',), extra=len(pgns))
 
     if request.method == 'POST':
@@ -56,7 +49,7 @@ def parse_pgn(request):
 
         if formset.is_valid():
             formset.save()
-            pgns = []
+            request.session['pgn'] = ""
             return redirect('/admin/chess_app/pgn')
 
         return render(request, 'parser.html', {'formset': formset})

@@ -9,7 +9,7 @@ def get_data(file):
 
     game = chess.pgn.read_game(pgn)
     while game is not None:
-        pgns.append(game)
+        pgns.append(str(game))
         game = chess.pgn.read_game(pgn)
     # meta = {'first_name': first_game.headers["White"], 'last_name': first_game.headers["White"]}
 
