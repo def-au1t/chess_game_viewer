@@ -1,9 +1,11 @@
 # Register your models here.
 
 from django.contrib import admin
-from .getdata import get_player_data
+from .getdata import get_data
 from .models import Game, Player, Tournament, PGN, Parse
 from django.shortcuts import redirect
+
+from .views import set_pgns
 
 admin.site.register(Game)
 
@@ -26,16 +28,15 @@ class MyModelAdmin(admin.ModelAdmin):
 
 class PgnAdd(admin.ModelAdmin):
     def response_add(self, request, obj, post_url_continue=None):
-        return redirect('/admin/chess_2/pgn/add')
+        return redirect('/parser')
 
     def response_change(self, request, obj):
-        return redirect('/admin/chess_2/pgn/add')
+        return redirect('/parser')
 
     def save_model(self, request, obj, form, change):
         obj.save()
-        datas = get_player_data(obj.upload.path)
-        global pgn
-        pgn = datas['pgn']
+        datas = get_data(obj.upload.path)
+        set_pgns(datas['pgn'])
 
 
 admin.site.register(PGN, MyModelAdmin)

@@ -1,16 +1,19 @@
 import chess.pgn
 
 
-def get_player_data(file):
+def get_data(file):
     # Open image file for reading (binary mode)
     pgn = open(file)
-
+    pgns = []
     # Parse file
 
-    first_game = chess.pgn.read_game(pgn)
+    game = chess.pgn.read_game(pgn)
+    while game is not None:
+        pgns.append(game)
+        game = chess.pgn.read_game(pgn)
     # meta = {'first_name': first_game.headers["White"], 'last_name': first_game.headers["White"]}
 
-    meta = {'pgn': first_game}
+    meta = {'pgn': pgns}
 
     # create dictionary to receive data
     # meta={}
