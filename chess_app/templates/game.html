@@ -1,53 +1,60 @@
 {%  extends 'base.html' %}
 
 {% block content %}
-    <h1>Partia </h1>
-        <div><strong>Białe:</strong> {{ object.white_player.first_name }} {{ object.white_player.last_name }}
-            <strong>Czarne:</strong> {{ object.black_player.first_name }} {{ object.black_player.last_name }}
-            <strong>Wynik:</strong> {{ object.result }}
-        </div>
+<div class="row">
+<div class="col-12 col-xl-7">
+<div class="card my-3">
+    <div class="card-header text-center"><strong>{{ object.white_player.first_name }} {{ object.white_player.last_name }} -
+             {{ object.black_player.first_name }} {{ object.black_player.last_name }}</strong></div>
 
-<iframe height='720' width='600' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://pgn4web-board.casaschi.net/?delay=1000&amp;
+    {%  if object.tournament is not null %}
+  <ul class="list-group list-group-flush"><strong>
+     <li class="list-group-item d-flex justify-content-between align-items-center">
+         <span>{{ object.tournament.name }}</span><span>{{ object.tournament.date }}</span>
+     </li></strong>
+  </ul>
+    {% endif %}
+<div class="d-flex align-items-center"><iframe class="mx-auto mt-3" height='600' width='{% if not request.user_agent.is_mobile %}600 {% else %}330{%  endif %}' frameborder='0' scrolling='yes' marginheight='0' marginwidth='0' src='http://pgn4web-board.casaschi.net/?delay=1000&amp;
 pieceFont=uscf&amp;
-pieceSize=40&amp;
+{% if not request.user_agent.is_mobile %}
+pieceSize=40&amp;&amp;
 squareSize=50&amp;
-lightColorHex=E5E1C6&amp;
-darkColorHex=CCCBAC&amp;
+{% endif %}
+lightColorHex=FFCC99&amp;
+darkColorHex=CC9966&amp;
 highlightMode=border&amp;
-highlightColorHex=FFFF00&amp;
-highlightMoveColorHex=F5F587&amp;
+highlightColorHex=705438&amp;
+highlightMoveColorHex=FFCC99&amp;
 headerDisplay=centered&amp;
 movesDisplay=figurine&amp;
 fontHeaderSize=80pct&amp;
 fontMovesSize=80pct&amp;
 fontCommentsSize=80pct&amp;
-frameHeight=700&amp;
-frameWidth=600&amp;
+frameHeight=600&amp;
+frameWidth={% if not request.user_agent.is_mobile %}550 {% else %}330{%  endif %}&amp;
 pgnText={{ game.pgn.pgn }}'
         >
 
         your web browser and/or your host do not support iframes as required to display the chessboard
 
         </iframe>
+</div>
+</div>
 
-{#  TODO: remove this after converting  to dynamic page   #}
+  </div>
+<div class="col-12 col-xl-5">
+{% include "partial/similar.html" %}
+</div>
+</div>
+
     {%  if 'tournament' in request.META.HTTP_REFERER %}
     <div class="text-center">
         <a class="btn btn-info m-3" href="{{ request.META.HTTP_REFERER }}">Powrót do turnieju</a>
     </div>
     {% else %}
     <div class="text-center">
-        <a class="btn btn-info m-3" href="{{ request.META.HTTP_REFERER }}">Powrót do listy partii</a>
+        <a class="btn btn-info m-3" href="{% url 'chess_viewer:index' %}">Powrót do listy partii</a>
     </div>
     {% endif %}
-
-{#    <script>#}
-{#    //    var pgn = "1. e4 e5 2. Nf3 Nc6  3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5 Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3 Qh5 { now the whole idea unfolds } 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 (19... Rxg2 20. Kxg2 Ne5 { does not work }) 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24. Bxe7#";#}
-{#        var pgn = "1. e4 e5 2. Nf3 Nc6  3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4";#}
-{#        var pgn1 = "1. e4 e5 2. Nf3 Nc6  3.Bc4 Bc5D 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4D";#}
-{#        pgnv = pgnView("board0", {pgn: pgn, colorMarker: 'circle'});#}
-{#        pgnv = pgnPrint("board1", {pgn: pgn1});#}
-{#        pgnv = pgnEdit("board2", {pgn: "5... Be7 6. Re1 O-O", position: "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 3 5"});#}
-{#    </script>#}
 
 {% endblock %}

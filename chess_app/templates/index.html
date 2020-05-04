@@ -30,6 +30,6 @@
             </a>
         {% endfor %}
     </div>
-    {% include "pagination.html" %}
+    {% include "partial/pagination.html" with similar_games=similar_games %}
 
 {% endblock %}
