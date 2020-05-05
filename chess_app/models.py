@@ -10,11 +10,13 @@ class Parse(models.Model):
 
 class Tournament(models.Model):
     name = models.CharField(max_length=200)
+    description = models.TextField(max_length=5000, null=True)
     type = models.CharField(max_length=1, null=True)
     time = models.DecimalField(max_digits=5, decimal_places=1, default=0, null=True)
     time_add = models.DecimalField(max_digits=5, decimal_places=1, default=0, null=True)
     date = models.DateField(null=True)
     city = models.CharField(max_length=50, null=True)
+    link = models.CharField(max_length=200, null=True)
 
 
 class Player(models.Model):
