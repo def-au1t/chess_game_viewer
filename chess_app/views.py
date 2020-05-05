@@ -19,14 +19,13 @@ class TournamentsList(ListView):
 class TournamentDetails(DetailView, MultipleObjectMixin):
     model = Tournament
     template_name = "../templates/tournament.html"
-    paginate_by = 1  # TODO: change this
+    paginate_by = 5
     ordering = ['-id']
 
     def get_context_data(self, **kwargs):
         object_list = Game.objects.filter(tournament_id=self.object.id).order_by("-id")
         context = super(TournamentDetails, self).get_context_data(object_list=object_list, **kwargs)
         return context
-
 
 class GamesList(ListView):
     model = Game
@@ -38,6 +37,22 @@ class GamesList(ListView):
 class GameDetails(DetailView):
     model = Game
     template_name = "../templates/game.html"
+
+    def get_context_data(self, **kwargs):
+        similar_games = list(Game.objects.filter(tournament_id=self.object.tournament_id).order_by("round"))
+        type='tournament'
+        if len(similar_games) < 2:
+            similar_games = list(Game.objects.exclude(id=self.object.id).order_by('?')[:5])
+            similar_games[0] = self.object
+            type='random'
+        current_game_id = self.object.id
+        context = super(GameDetails, self).get_context_data(
+            similar_games=similar_games,
+            current_game_id=current_game_id,
+            type=type,
+            **kwargs)
+        return context
+
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -61,3 +76,4 @@ def parse_pgn(request):
     else:
         formset = PgnFormSet(queryset=PGN.objects.none(), initial=[{'pgn': x} for x in pgns])
         return render(request, 'parser.html', {'formset': formset})
+
