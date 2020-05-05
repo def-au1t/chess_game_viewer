@@ -1,5 +1,9 @@
 {%  extends 'base.html' %}
 
+{% block title %}{{ object.white_player.first_name }} {{ object.white_player.last_name }} -
+             {{ object.black_player.first_name }} {{ object.black_player.last_name }}
+{% endblock title %}
+
 {% block content %}
 <div class="row">
 <div class="col-12 col-xl-7">
@@ -7,7 +11,7 @@
     <div class="card-header text-center"><strong>{{ object.white_player.first_name }} {{ object.white_player.last_name }} -
              {{ object.black_player.first_name }} {{ object.black_player.last_name }}</strong></div>
 
-    {%  if object.tournament is not null %}
+    {%  if object.tournament %}
   <ul class="list-group list-group-flush"><strong>
      <li class="list-group-item d-flex justify-content-between align-items-center">
          <span>{{ object.tournament.name }}</span><span>{{ object.tournament.date }}</span>
@@ -30,6 +34,8 @@ movesDisplay=figurine&amp;
 fontHeaderSize=80pct&amp;
 fontMovesSize=80pct&amp;
 fontCommentsSize=80pct&amp;
+autoplayMode=game&amp;
+delay=3000&amp;
 frameHeight=600&amp;
 frameWidth={% if not request.user_agent.is_mobile %}550 {% else %}330{%  endif %}&amp;
 pgnText={{ game.pgn.pgn }}'
@@ -47,13 +53,13 @@ pgnText={{ game.pgn.pgn }}'
 </div>
 </div>
 
-    {%  if 'tournament' in request.META.HTTP_REFERER %}
+    {%  if object.tournament %}
     <div class="text-center">
-        <a class="btn btn-info m-3" href="{{ request.META.HTTP_REFERER }}">Powrót do turnieju</a>
+        <a class="btn btn-info m-3" href="{% url 'chess_viewer:tournament' object.tournament.id %}">Powrót do turnieju</a>
     </div>
     {% else %}
     <div class="text-center">
-        <a class="btn btn-info m-3" href="{% url 'chess_viewer:index' %}">Powrót do listy partii</a>
+        <a class="btn btn-info m-3" href="{{  request.META.HTTP_REFERER }}">Powrót</a>
     </div>
     {% endif %}
 

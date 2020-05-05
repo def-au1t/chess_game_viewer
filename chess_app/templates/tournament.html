@@ -1,30 +1,90 @@
 {%  extends 'base.html' %}
 
+{% block title %}
+    {{ object.name }}
+{% endblock title %}
+
 {% block content %}
-    <h1>{{ object.name }} </h1>
-    <h4>Data: {{ object.date }}</h4>
-        {% for game in object_list %}
-        <a class="list-group-item list-group-item-action " href="{% url 'chess_viewer:game' game.id %}?tid={{ object.id }}">
-        <div class="row col">
-            <div class="col-12 col-md-8">
-                <div class="">
-                    <b><span class="badge badge-secondary">{% if game.result == 0 %}0:1{% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
-                        {{game.white_player.first_name}} {{ game.white_player.last_name }}
-                        - {{game.black_player.first_name}} {{ game.black_player.last_name }} </b>
-                </div>
+    <div class="my-4">
+    <span class="text-center">
+    <h1 class="mb-3">{{ object.name }} </h1>
 
-                <div class=""> {{ game.preview }}</div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class=""><b>{{ game.object.name }}</b> </div>
-                <div class=""><b>{{ game.object.date }} {% if game.object.city != None %}- {{  game.object.city}}{% endif %}</b> </div>
+    {% if object.description %} <div class="">{{ object.description }}</div> {% endif %}
+    </span>
+
+    </div>
+    <table class="table">
+      <tbody>
+        {% if object.date or object.city %}
+        <tr>
+          <th scope="row"> Data i miejsce: </th>
+          <td> {% if object.date%}{{ object.date }}{% endif %}, {% if object.city%}{{ object.city }}{% endif %} </td>
+        </tr>
+        {% endif %}
+        {% if object.time and object.time_add %}
+        <tr>
+          <th scope="row">Tempo gry:</th>
+          <td>P{{ object.time | floatformat }}'+{{ object.time_add | floatformat }}''/pos.</td>
+        </tr>
+        {% endif %}
+        {% if object.link %}
+        <tr>
+          <th scope="row">Więcej informacji o turnieju: </th>
+          <td><a href="{{ object.link }}">{{ object.name }}</a></td>
+        </tr>
+      {% endif %}
+      </tbody>
+    </table>
+
+
+        {% for round, games_round in object_list %}
+            <div class="card text-center m-3">
+              <div class="card-header "><b>
+
+            Runda {{ round }}</b>
+              </div>
+
+            <div class="list-group">
+            {% for game in games_round %}
+
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                   href="{% url 'chess_viewer:game' game.id %}">
+                    <span>
+                    <span class="badge badge-secondary">{% if game.result == 0 %}0:1
+                            {% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
+                        <b>
+                            {{ game.white_player.first_name }} {{ game.white_player.last_name }}
+                            - {{ game.black_player.first_name }} {{ game.black_player.last_name }} </b>
+                    </span>
+                    <span>
+                         {{ game.preview }}
+                    <span>
+                </a>
+{#                <a class="list-group-item list-group-item-action " href="{% url 'chess_viewer:game' game.id %}?tid={{ object.id }}">#}
+{#                <div class="row col">#}
+{#                    <div class="col-12 col-md-8">#}
+{#                        <div class="">#}
+{#                            <b><span class="badge badge-secondary">{% if game.result == 0 %}0:1{% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>#}
+{#                                {{game.white_player.first_name}} {{ game.white_player.last_name }}#}
+{#                                - {{game.black_player.first_name}} {{ game.black_player.last_name }} </b>#}
+{#                        </div>#}
+{##}
+{#                        <div class=""> {{ game.preview }}</div>#}
+{#                    </div>#}
+{#                    <div class="col-12 col-md-4">#}
+{#                        <div class=""><b>{{ game.object.name }}</b> </div>#}
+{#                        <div class=""><b>{{ game.object.date }} {% if game.object.city != None %}- {{  game.object.city}}{% endif %}</b> </div>#}
+{#                    </div>#}
+{##}
+{#                </div>#}
+{#                </a>#}
+            {% endfor %}
             </div>
 
-        </div>
-        </a>
+            </div>
         {%  endfor %}
         {% include "partial/pagination.html" %}
-    <div class="text-center"><a class="btn btn-info m-3" href="{% url 'chess_viewer:tournaments' %}">Powrót do listy turniejów (nie dziala)</a></div>
+    <div class="text-center"><a class="btn btn-info m-3" href="{% url 'chess_viewer:tournaments' %}">Powrót do listy turniejów </a></div>
 
 
     {% endblock %}

@@ -12,25 +12,32 @@ from .getdata import get_player_data
 class TournamentsList(ListView):
     model = Tournament
     template_name = "../templates/tournaments.html"
-    paginate_by = 10
+    paginate_by = 5
     ordering = ['-date']
 
 
 class TournamentDetails(DetailView, MultipleObjectMixin):
     model = Tournament
     template_name = "../templates/tournament.html"
-    paginate_by = 5
-    ordering = ['-id']
+    # paginate_by = 5
+    # ordering = ['-id']
 
     def get_context_data(self, **kwargs):
-        object_list = Game.objects.filter(tournament_id=self.object.id).order_by("-id")
-        context = super(TournamentDetails, self).get_context_data(object_list=object_list, **kwargs)
+        games = list(Game.objects.filter(tournament_id=self.object.id).order_by("-id"))
+        rounds = set()
+        for game in games:
+            rounds.add(game.round)
+
+        games_grouped = dict()
+        for single_round in rounds:
+            games_grouped[single_round] = [game for game in games if game.round == single_round]
+        context = super(TournamentDetails, self).get_context_data(object_list=games_grouped.items(), **kwargs)
         return context
 
 class GamesList(ListView):
     model = Game
     template_name = "../templates/index.html"
-    paginate_by = 5
+    paginate_by = 10
     ordering = ['id']
 
 

@@ -7,10 +7,26 @@
     {#      <link rel="stylesheet" href="{% static 'css/chessboard.css' %}">#}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Baza partii szachowych</title>
+    <title>  {% block title %}Baza partii szachowych  {% endblock %}</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
     {#      <script src="{% static 'js/chess.js' %}"></script>#}
     {#    <script src="{% static 'js/chessboard.js' %}"></script>#}
+    <style>
+        html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 80px; /* Margin bottom by footer height */
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}</style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -34,10 +50,17 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container mb-5">
     {% block content %}
     {% endblock %}
 </div>
+
+<footer class="footer">
+  <div class="container text-center">
+    <span class="text-muted">Bazy danych © 2020</span>
+  </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
