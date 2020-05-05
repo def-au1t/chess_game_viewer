@@ -20,17 +20,17 @@
                     <div class="form-row d-flex justify-content-center">
                         <div class="col-md-6 mb-3">
                             <label for="tournamentname">Nazwa turnieju</label>
-                            <input type="text" class="form-control" id="tournamentname" value="">
+                            <input type="text" class="form-control" id="tournamentname" name="t_name" value="">
 
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="tournamentdate">Data turnieju</label>
-                            <input type="date" class="form-control" id="tournamentdate">
+                            <input type="date" class="form-control" id="tournamentdate" name="t_date">
 
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="tournamentcity">Miejsce</label>
-                            <input type="text" class="form-control" id="tournamentcity">
+                            <input type="text" class="form-control" id="tournamentcity" name="t_city">
 
                         </div>
                     </div>
@@ -38,17 +38,17 @@
                         <div class="col-md-3 mb-3">
 
                             <label for="gametime">Tempo gry</label>
-                            <input type="number" class="form-control" id="gametime">
+                            <input type="number" class="form-control" id="gametime" name="t_gametime">
 
                         </div>
                         <div class="col-md-4 mb-3">
 
                             <label for="tournamenttype">Rodzaj zawodów</label>
-                            <select class="custom-select" id="tournamenttype">
+                            <select class="custom-select" id="tournamenttype" name="t_type">
                                 <option selected value="">...</option>
-                                <option>Klasyczne</option>
-                                <option>Szybkie</option>
-                                <option>Błyskawiczne</option>
+                                <option value="k">Klasyczne</option>
+                                <option value="s">Szybkie</option>
+                                <option value="b">Błyskawiczne</option>
                             </select>
                         </div>
 
