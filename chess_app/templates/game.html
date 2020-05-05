@@ -1,5 +1,9 @@
 {%  extends 'base.html' %}
 
+{% block title %}{{ object.white_player.first_name }} {{ object.white_player.last_name }} -
+             {{ object.black_player.first_name }} {{ object.black_player.last_name }}
+{% endblock title %}
+
 {% block content %}
 <div class="row">
 <div class="col-12 col-xl-7">
