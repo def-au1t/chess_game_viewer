@@ -1,6 +1,9 @@
+from django.http import QueryDict
 from django.views.generic import ListView, DetailView
 from django.views.generic.list import MultipleObjectMixin
 from django.forms import modelformset_factory
+from django_filters.views import FilterView
+
 from .models import Tournament, Game, PGN
 from .forms import PgnForm
 from django.shortcuts import render, redirect
@@ -8,38 +11,27 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.sessions.middleware import SessionMiddleware
 from .getdata import get_player_data
 from django import  forms
+import django_filters
 
-class TournamentsList(ListView, forms.Form):
-    t_name = forms.CharField(max_length=256)
-    t_date = forms.DateField()
-    t_city = forms.CharField(max_length=256)
-    t_gametime = forms.IntegerField()
-    t_type = forms.Select()
 
+
+class TournamentsListFilter(django_filters.FilterSet):
+    # name__icontains = django_filters.CharFilter(field_name='name', lookup_expr='icontains')
+
+    class Meta:
+        model = Tournament
+        # fields = {}
+        fields = {
+            "name": ["icontains"]
+        }
+
+class TournamentsList(FilterView):
     model = Tournament
     template_name = "../templates/tournament_list.html"
     paginate_by = 1  # TODO: change this
+    ordering = ['-date']
 
-    def get_queryset(self):
-        queryset = Tournament.objects.all()
-        filters = self.request.GET
-
-        if filters.get("t_name"):
-            queryset = queryset.filter(name__icontains=filters["t_name"])
-
-        if filters.get("t_date"):
-            queryset = queryset.filter(date__iexact=filters["t_date"])
-
-        if filters.get("t_city"):
-            queryset = queryset.filter(city__icontains=filters["t_city"])
-
-        if filters.get("t_gametime"):
-            queryset = queryset.filter(time__exact=filters["t_gametime"])
-
-        if filters.get("t_type"):
-            queryset = queryset.filter(type__exact=filters["t_type"])
-
-        return queryset.order_by('-date')
+    filterset_class = TournamentsListFilter
 
 
 class TournamentDetails(DetailView, MultipleObjectMixin):  # TODO: MultipleObjectMixin - is that necessary?
@@ -54,7 +46,7 @@ class TournamentDetails(DetailView, MultipleObjectMixin):  # TODO: MultipleObjec
         rounds = set(map(lambda g: g.round, games))
 
         games_grouped = dict()
-        for single_round in rounds:
+        for single_round in rounds:  # TODO: it would be better to reverse the order of loops
             games_grouped[single_round] = [game for game in games if game.round == single_round]
 
         context = super(TournamentDetails, self).get_context_data(object_list=games_grouped.items(), **kwargs)

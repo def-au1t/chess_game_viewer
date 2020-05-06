@@ -34,7 +34,7 @@ class Game(models.Model):
     black_player = models.ForeignKey(Player, related_name='black', on_delete=models.CASCADE)
     result = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True)
-    round = models.DecimalField(max_digits=2, decimal_places=0, default=1, null=True)
+    round = models.IntegerField(default=1, null=True)
     pgn = models.ForeignKey(PGN, on_delete=models.CASCADE, null=True)
     preview = models.TextField(max_length=100, null=True)
 
