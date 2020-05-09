@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load get_dict_value %}
 
 {% block nav-tournaments %}
     <a class="nav-link active" href="{% url 'chess_viewer:tournaments' %}">Turnieje</a>
@@ -13,6 +14,7 @@
     <span class="text-center">
     <h2 class="mb-3">Baza turniejów </h2>
 
+
     </span>
         <div class="card">
             <div class="card-body">
@@ -20,17 +22,20 @@
                     <div class="form-row d-flex justify-content-center">
                         <div class="col-md-6 mb-3">
                             <label for="tournamentname">Nazwa turnieju</label>
-                            <input type="text" class="form-control" id="tournamentname" name="name__icontains">
+                            <input type="text" class="form-control" id="tournamentname"
+                                   name="name__icontains" value="{{ filter.data | get_dict_value:"name__icontains" }}">
 
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="tournamentdate">Data turnieju</label>
-                            <input type="date" class="form-control" id="tournamentdate" name="date">
+                            <input type="date" class="form-control" id="tournamentdate"
+                                   name="date__ym" value="{{ filter.data | get_dict_value:"date__ym"}}">
 
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="tournamentcity">Miejsce</label>
-                            <input type="text" class="form-control" id="tournamentcity" name="city">
+                            <input type="text" class="form-control" id="tournamentcity"
+                                   name="city__icontains" value="{{ filter.data | get_dict_value:"city__icontains"}}">
 
                         </div>
                     </div>

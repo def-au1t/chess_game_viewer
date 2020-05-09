@@ -16,14 +16,14 @@ import django_filters
 
 
 class TournamentsListFilter(django_filters.FilterSet):
-    # name__icontains = django_filters.CharFilter(field_name='name', lookup_expr='icontains')
-
     class Meta:
         model = Tournament
-        # fields = {}
         fields = {
-            "name": ["icontains"]
+            "name": ["icontains"],
+            "date": ["ym"],
+            "city": ["icontains"],
         }
+
 
 class TournamentsList(FilterView):
     model = Tournament

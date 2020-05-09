@@ -1,4 +1,5 @@
 from django.db import models
+from chess_app.lookups import OnlyYearAndMonth
 
 
 class Parse(models.Model):
@@ -17,6 +18,8 @@ class Tournament(models.Model):
     date = models.DateField(null=True)
     city = models.CharField(max_length=50, null=True)
     link = models.CharField(max_length=200, null=True)
+
+    models.DateField.register_lookup(OnlyYearAndMonth)
 
 
 class Player(models.Model):
@@ -37,4 +40,5 @@ class Game(models.Model):
     round = models.IntegerField(default=1, null=True)
     pgn = models.ForeignKey(PGN, on_delete=models.CASCADE, null=True)
     preview = models.TextField(max_length=100, null=True)
+
 
