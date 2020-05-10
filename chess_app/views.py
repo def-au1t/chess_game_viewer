@@ -22,7 +22,8 @@ class TournamentsListFilter(django_filters.FilterSet):
             "name": ["icontains"],
             "date": ["ym"],
             "city": ["icontains"],
-            "time": ["exact"]
+            "time": ["exact"],
+            "type": ["exact"]
         }
 
 
@@ -34,6 +35,17 @@ class TournamentsList(FilterView):
 
     filterset_class = TournamentsListFilter
 
+    sel_op = {
+        '': '...',
+        'k': 'Klasyczne',
+        's': 'Szybkie',
+        'b': 'Błyskawiczne'
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super(TournamentsList, self).get_context_data(**kwargs)
+        context['select_options'] = self.sel_op
+        return context
 
 class TournamentDetails(DetailView, MultipleObjectMixin):  # TODO: MultipleObjectMixin - is that necessary?
     model = Tournament

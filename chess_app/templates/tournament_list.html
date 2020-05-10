@@ -29,13 +29,13 @@
                         <div class="col-md-3 mb-3">
                             <label for="tournamentdate">Data turnieju</label>
                             <input type="date" class="form-control" id="tournamentdate"
-                                   name="date__ym" value="{{ filter.data | get_dict_value:"date__ym"}}">
+                                   name="date__ym" value="{{ filter.data | get_dict_value:"date__ym" }}">
 
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="tournamentcity">Miejsce</label>
                             <input type="text" class="form-control" id="tournamentcity"
-                                   name="city__icontains" value="{{ filter.data | get_dict_value:"city__icontains"}}">
+                                   name="city__icontains" value="{{ filter.data | get_dict_value:"city__icontains" }}">
 
                         </div>
                     </div>
@@ -44,17 +44,23 @@
 
                             <label for="gametime">Tempo gry</label>
                             <input type="number" class="form-control" id="gametime"
-                                   name="time" value="{{ filter.data | get_dict_value:"time"}}">
+                                   name="time" value="{{ filter.data | get_dict_value:"time" }}">
 
                         </div>
-                        <div class="col-md-4 mb-3">
 
+                        <div class="col-md-4 mb-3">
                             <label for="tournamenttype">Rodzaj zawodów</label>
                             <select class="custom-select" id="tournamenttype" name="type">
-                                <option selected value="">...</option>
-                                <option value="k">Klasyczne</option>
-                                <option value="s">Szybkie</option>
-                                <option value="b">Błyskawiczne</option>
+                                {% with filter_type_value=filter.data|get_dict_value:"type" %}
+                                    {% for k, v in select_options.items %}
+                                        <option value="{{ k }}"
+                                                {% if filter_type_value == k %}
+                                                selected="selected"
+                                                {% endif %}>
+                                            {{ v }}
+                                        </option>
+                                    {% endfor %}
+                                {% endwith %}
                             </select>
                         </div>
 
@@ -67,11 +73,6 @@
             </div>
         </div>
     </div>
-
-{#        <form  method="get">#}
-{#    {{ filter.form.as_p }}#}
-{#    <button type="submit">Search</button>#}
-{#  </form>#}
 
     <div class="list-group ">
         {% for tournament in object_list %}
@@ -95,14 +96,18 @@
                 <div class="">
                     <span class="badge badge-info">{% if tournament.type == 's' %}szachy szybkie:
                     {% elif tournament.type == 'b' %}szachy błyskawiczne: {% else %}szachy klasyczne: {% endif %}
-                    {% if tournament.time and tournament.time_add %}
-                        P{{ tournament.time | floatformat }}'+{{ tournament.time_add | floatformat }}''
-                    {% endif %}
+                        {% if tournament.time and tournament.time_add %}
+                            P{{ tournament.time | floatformat }}'+{{ tournament.time_add | floatformat }}''
+                        {% endif %}
                     </span>
                 </div>
             </span>
 
             </a>
+        {% empty %}
+            <div class="alert alert-danger text-center" role="alert">
+                Nie znaleziono turniejów o zadanych kryteriach.
+            </div>
         {% endfor %}
 
     </div>
