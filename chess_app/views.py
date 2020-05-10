@@ -22,6 +22,7 @@ class TournamentsListFilter(django_filters.FilterSet):
             "name": ["icontains"],
             "date": ["ym"],
             "city": ["icontains"],
+            "time": ["exact"]
         }
 
 

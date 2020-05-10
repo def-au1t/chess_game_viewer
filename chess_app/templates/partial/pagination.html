@@ -1,7 +1,8 @@
+{% load url_replace %}
 {% if is_paginated %}
     <ul class="pagination justify-content-center mt-3">
         {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+            <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' page_obj.previous_page_number %}">&laquo;</a></li>
         {% else %}
             {#        <li class="disabled page-item"><a class="page-link">&laquo;</a></li>#}
         {% endif %}
@@ -12,13 +13,13 @@
                 </li>
             {% else %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    <a class="page-link" href="?{% url_replace request 'page' i %}">{{ i }}</a>
                 </li>
             {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                <a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}">&raquo;</a>
             </li>
         {% else %}
             {#        <li class="disabled page-item"><a class="page-link">&raquo;</a></li>#}
