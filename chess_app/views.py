@@ -37,7 +37,6 @@ class TournamentDetails(DetailView):
 
     def get_context_data(self, **kwargs):
         games = list(Game.objects.filter(tournament_id=self.object.id).order_by("-id"))
-        rounds = set(map(lambda g: g.round, games))
 
         games_grouped = dict()
         for game in games:
@@ -46,6 +45,7 @@ class TournamentDetails(DetailView):
                 games_grouped[r].append(game)
             else:
                 games_grouped[r] = [game]
+                
         context = super(TournamentDetails, self).get_context_data(object_list=sorted(games_grouped.items()), **kwargs)
         return context
 
