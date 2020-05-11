@@ -18,12 +18,15 @@
                         <div class="col-md-5 mb-3">
                             <label for="gamelastname">Nazwisko</label>
                             <input type="text" class="form-control" id="gamelastname"
-                                   value="">
+                                   name="name_filter"
+                                   value="{{ filter.data | get_dict_value:"name_filter" }}">
 
                         </div>
                         <div class="col-md-5 mb-3">
                             <label for="gameclub">Klub</label>
-                            <input type="text" class="form-control" id="gameclub">
+                            <input type="text" class="form-control" id="gameclub"
+                                   name="club_filter"
+                                   value="{{ filter.data | get_dict_value:"club_filter" }}">
 
                         </div>
                     </div>

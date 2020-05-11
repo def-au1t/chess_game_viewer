@@ -1,4 +1,5 @@
 from django.db import models
+
 from chess_app.lookups import OnlyYearAndMonth
 
 
