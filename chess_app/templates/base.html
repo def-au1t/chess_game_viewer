@@ -4,33 +4,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% load static %}
-    {#      <link rel="stylesheet" href="{% static 'css/chessboard.css' %}">#}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>  {% block title %}Baza partii szachowych  {% endblock %}</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
-    {#      <script src="{% static 'js/chess.js' %}"></script>#}
-    {#    <script src="{% static 'js/chessboard.js' %}"></script>#}
     <style>
         html {
   position: relative;
   min-height: 100%;
 }
 body {
-  margin-bottom: 80px; /* Margin bottom by footer height */
+  margin-bottom: 80px;
 }
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 60px; /* Set the fixed height of the footer here */
-  line-height: 60px; /* Vertically center the text there */
+  height: 60px;
+  line-height: 60px;
   background-color: #f5f5f5;
 }</style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'chess_viewer:index' %}">Baza partii szachowych</a>
+  </a>
+    <a class="navbar-brand" href="{% url 'chess_viewer:index' %}">
+    <img class="d-inline-block align-top mr-3" src={% static 'img/logo.png' %} width="30" height="30" alt="">
+        Baza partii szachowych</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

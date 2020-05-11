@@ -36,7 +36,6 @@
       </tbody>
     </table>
 
-
         {% for round, games_round in object_list %}
             <div class="card text-center m-3">
               <div class="card-header "><b>
@@ -60,28 +59,15 @@
                          {{ game.preview }}
                     <span>
                 </a>
-{#                <a class="list-group-item list-group-item-action " href="{% url 'chess_viewer:game' game.id %}?tid={{ object.id }}">#}
-{#                <div class="row col">#}
-{#                    <div class="col-12 col-md-8">#}
-{#                        <div class="">#}
-{#                            <b><span class="badge badge-secondary">{% if game.result == 0 %}0:1{% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>#}
-{#                                {{game.white_player.first_name}} {{ game.white_player.last_name }}#}
-{#                                - {{game.black_player.first_name}} {{ game.black_player.last_name }} </b>#}
-{#                        </div>#}
-{##}
-{#                        <div class=""> {{ game.preview }}</div>#}
-{#                    </div>#}
-{#                    <div class="col-12 col-md-4">#}
-{#                        <div class=""><b>{{ game.object.name }}</b> </div>#}
-{#                        <div class=""><b>{{ game.object.date }} {% if game.object.city != None %}- {{  game.object.city}}{% endif %}</b> </div>#}
-{#                    </div>#}
-{##}
-{#                </div>#}
-{#                </a>#}
+
             {% endfor %}
             </div>
 
             </div>
+        {% empty %}
+        <div class="alert alert-info text-center" role="alert">
+            Nie znaleziono partii z tego turnieju w bazie.
+        </div>
         {%  endfor %}
         {% include "partial/pagination.html" %}
     <div class="text-center"><a class="btn btn-info m-3" href="{% url 'chess_viewer:tournaments' %}">Powrót do listy turniejów </a></div>
