@@ -40,10 +40,13 @@ class TournamentDetails(DetailView):
         rounds = set(map(lambda g: g.round, games))
 
         games_grouped = dict()
-        for single_round in rounds:  # TODO: it would be better to reverse the order of loops
-            games_grouped[single_round] = [game for game in games if game.round == single_round]
-
-        context = super(TournamentDetails, self).get_context_data(object_list=games_grouped.items(), **kwargs)
+        for game in games:
+            r = game.round
+            if games_grouped.get(r):
+                games_grouped[r].append(game)
+            else:
+                games_grouped[r] = [game]
+        context = super(TournamentDetails, self).get_context_data(object_list=sorted(games_grouped.items()), **kwargs)
         return context
 
 

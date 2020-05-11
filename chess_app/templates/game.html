@@ -8,8 +8,15 @@
 <div class="row">
 <div class="col-12 col-xl-7">
 <div class="card my-3">
-    <div class="card-header text-center"><strong>{{ object.white_player.first_name }} {{ object.white_player.last_name }} -
-             {{ object.black_player.first_name }} {{ object.black_player.last_name }}</strong></div>
+    <div class="card-header text-center d-inline-flex justify-content-center">
+        <div class="text-right"><strong><div>{{ object.white_player.first_name }} {{ object.white_player.last_name }}</div></strong>
+            <div class="small">{% if object.white_player.club %} {{ object.white_player.club }} {% endif %}</div>
+        </div>
+        <div class="mx-2"><b>-</b></div>
+        <div class="text-left"><strong><div>{{ object.black_player.first_name }} {{ object.black_player.last_name }}</div></strong>
+            <div class="small">{% if object.black_player.club %} {{ object.black_player.club }} {% endif %}</div>
+        </div>
+    </div>
 
     {%  if object.tournament %}
   <ul class="list-group list-group-flush"><strong>
