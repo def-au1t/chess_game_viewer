@@ -1,36 +1,18 @@
-from django.http import QueryDict
-from django.views.generic import ListView, DetailView
-from django.views.generic.list import MultipleObjectMixin
+from django.contrib.auth.decorators import user_passes_test
 from django.forms import modelformset_factory
+from django.shortcuts import render, redirect
+from django.views.generic import DetailView
 from django_filters.views import FilterView
 
-from .models import Tournament, Game, PGN
-from .forms import PgnForm
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.sessions.middleware import SessionMiddleware
+from .filters import TournamentsListFilter, GamesListFilter
 from .getdata import get_player_data
-from django import  forms
-import django_filters
-
-
-
-class TournamentsListFilter(django_filters.FilterSet):
-    class Meta:
-        model = Tournament
-        fields = {
-            "name": ["icontains"],
-            "date": ["ym"],
-            "city": ["icontains"],
-            "time": ["exact"],
-            "type": ["exact"]
-        }
+from .models import Tournament, Game, PGN
 
 
 class TournamentsList(FilterView):
     model = Tournament
     template_name = "../templates/tournament_list.html"
-    paginate_by = 1  # TODO: change this
+    paginate_by = 1  # TODO: change this later
     ordering = ['-date']
 
     filterset_class = TournamentsListFilter
@@ -43,11 +25,10 @@ class TournamentsList(FilterView):
     }
 
     def get_context_data(self, **kwargs):
-        context = super(TournamentsList, self).get_context_data(**kwargs)
-        context['select_options'] = self.sel_op
-        return context
+        return super(TournamentsList, self).get_context_data(select_options=self.sel_op, **kwargs)
 
-class TournamentDetails(DetailView, MultipleObjectMixin):  # TODO: MultipleObjectMixin - is that necessary?
+
+class TournamentDetails(DetailView):
     model = Tournament
     template_name = "../templates/tournament.html"
 
@@ -66,11 +47,23 @@ class TournamentDetails(DetailView, MultipleObjectMixin):  # TODO: MultipleObjec
         return context
 
 
-class GamesList(ListView):
+class GamesList(FilterView):
     model = Game
     template_name = "../templates/game_list.html"
     paginate_by = 10
     ordering = ['id']
+
+    filterset_class = GamesListFilter
+
+    sel_op = {
+        '': '...',
+        'k': 'Klasyczne',
+        's': 'Szybkie',
+        'b': 'Błyskawiczne'
+    }
+
+    def get_context_data(self, **kwargs):
+        return super(GamesList, self).get_context_data(select_options=self.sel_op, **kwargs)
 
 
 class GameDetails(DetailView):
