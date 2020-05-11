@@ -33,13 +33,13 @@ class GamesListFilter(django_filters.FilterSet):
 
 
     def name_filter_method(self, queryset, name, value):
-        return Game.objects.filter(
+        return queryset.filter(
             Q(white_player__last_name__icontains=value) |
             Q(black_player__last_name__icontains=value)
         )
 
     def club_filter_method(self, queryset, name, value):
-        return Game.objects.filter(
+        return queryset.filter(
             Q(white_player__club__icontains=value) |
             Q(black_player__club__icontains=value)
         )
