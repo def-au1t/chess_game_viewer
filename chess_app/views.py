@@ -5,7 +5,7 @@ from django.views.generic import DetailView
 from django_filters.views import FilterView
 
 from .filters import TournamentsListFilter, GamesListFilter
-from .getdata import get_player_data
+from .getdata import parse_data
 from .models import Tournament, Game, PGN
 
 
@@ -103,8 +103,7 @@ def parse_pgn(request):
             for f in formset:
                 cd = f.cleaned_data
                 data = cd.get('pgn')
-                get_player_data(data)
-            formset.save()
+                parse_data(data)
             request.session['pgn'] = ""
             return redirect('/admin/chess_app/pgn')
 

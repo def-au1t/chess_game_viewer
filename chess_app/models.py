@@ -36,6 +36,7 @@ class PGN(models.Model):
 class Game(models.Model):
     white_player = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE)
     black_player = models.ForeignKey(Player, related_name='black', on_delete=models.CASCADE)
+    date = models.DateField(null=True)
     result = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, null=True)
     round = models.IntegerField(default=1, null=True)

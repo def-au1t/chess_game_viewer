@@ -86,19 +86,17 @@
                 {% if game.preview %}
                     <div class=""> {{ game.preview |truncatechars:60 }}</div>
                 {% endif %}
-                {% if game.result %}
 
-                    <span class="badge badge-secondary">{% if game.result == 0 %}0:1
-                        {% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
-                {% endif %}
+                <span class="badge badge-secondary">{% if game.result == 0 %}0:1
+                    {% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
             </span>
 
                 {% if game.tournament %}
                     <span class="text-right">
                 <div class=""><b>{{ game.tournament.name |truncatechars:100 }}</b></div>
                 <div class=""><b>
-                    {% if game.tournament.date %}
-                        {{ game.tournament.date }}{% endif %}</b>
+                    {% if game.date %}
+                        {{ game.date }}{% endif %}</b>
                 </div>
                 <div class="">
                     <span class="badge badge-info">
