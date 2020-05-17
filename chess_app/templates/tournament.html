@@ -18,7 +18,9 @@
         {% if object.date or object.city %}
         <tr>
           <th scope="row"> Data i miejsce: </th>
-          <td> {% if object.date%}{{ object.date }}{% endif %}, {% if object.city%}{{ object.city }}{% endif %} </td>
+          <td> {% if object.date%}{{ object.date }}{% endif %}
+              {% if object.date and object.city %}, {% endif %}
+              {% if object.city%}{{ object.city }}{% endif %} </td>
         </tr>
         {% endif %}
         {% if object.time and object.time_add %}
@@ -38,10 +40,12 @@
 
         {% for round, games_round in object_list %}
             <div class="card text-center m-3">
+            {%  if round != 0 %}
               <div class="card-header "><b>
 
             Runda {{ round }}</b>
               </div>
+            {%  endif %}
 
             <div class="list-group">
             {% for game in games_round %}

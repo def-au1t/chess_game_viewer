@@ -43,6 +43,8 @@ class TournamentDetails(DetailView):
         games_grouped = dict()
         for game in games:
             r = game.round
+            if r is None:
+                r = 0
             if games_grouped.get(r):
                 games_grouped[r].append(game)
             else:
