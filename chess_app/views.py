@@ -76,17 +76,15 @@ class GameDetails(DetailView):
     def get_context_data(self, **kwargs):
         similar_games = list(Game.objects.filter(tournament_id=self.object.tournament_id).order_by("round"))
 
-        game_type = 'tournament'
         if len(similar_games) < 2:
             similar_games = list(Game.objects.exclude(id=self.object.id).order_by('?')[:5])
-            similar_games[0] = self.object
-            game_type = 'random'
+            if(len(similar_games)) > 0:
+                similar_games[0] = self.object
 
         current_game_id = self.object.id
         context = super(GameDetails, self).get_context_data(
             similar_games=similar_games,
             current_game_id=current_game_id,
-            type=game_type,
             **kwargs)
         return context
 
