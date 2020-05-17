@@ -15,8 +15,10 @@ def get_data(file, request):
     game = chess.pgn.read_game(pgn)
     t_name = game.headers.get("Event", "?")
     t_date = game.headers.get("EventDate", "????.??.??")
+    t_city = game.headers.get("Site", "?")
     request.session['t_name'] = t_name
     request.session['t_date'] = t_date
+    request.session['t_city'] = t_city
     while game is not None:
         pgns.append(str(game))
         game = chess.pgn.read_game(pgn)

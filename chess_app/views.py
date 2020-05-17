@@ -95,9 +95,25 @@ def parse_pgn(request):
     pgns = request.session.get('pgn')
     PgnFormSet = modelformset_factory(PGN, fields=('pgn',), extra=len(pgns))
     t_name = request.session.get("t_name")
+    tmp_tournament, created = Tournament.objects.get_or_create(name=t_name)
+    if not created:
+        description = tmp_tournament.description
+        time = tmp_tournament.time
+        time_add = tmp_tournament.time_add
+        type = tmp_tournament.type
+        link = tmp_tournament.link
+    else:
+        description = ""
+        time = 0
+        time_add = 0
+        type = ""
+        link = ""
     if t_name == "?":
         t_name = None
     t_date_str = request.session.get("t_date")
+    t_city = request.session.get("t_city")
+    if t_city == "?":
+        t_city = None
     try:
         t_date = parse(t_date_str).date()
         if t_date.year < 1950:
@@ -118,10 +134,12 @@ def parse_pgn(request):
             request.session['pgn'] = ""
             request.session['t_name'] = ""
             request.session['t_date'] = ""
+            request.session['city'] = ""
             return redirect('/admin/chess_app/pgn')
 
         return render(request, 'parser.html', {'t_form': t_form, 'formset': formset})
     else:
-        t_form = TournamentForm(initial={'name': t_name, 'date': t_date})
+        t_form = TournamentForm(initial={'name': t_name, 'date': t_date, 'city': t_city, 'description': description,
+                                         'time': time, 'time_add': time_add, 'type': type, 'link': link})
         formset = PgnFormSet(queryset=PGN.objects.none(), initial=[{'pgn': x} for x in pgns])
         return render(request, 'parser.html', {'t_form': t_form, 'formset': formset})
