@@ -49,14 +49,17 @@
                 <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    href="{% url 'chess_viewer:game' game.id %}">
                     <span>
-                    <span class="badge badge-secondary">{% if game.result == 0 %}0:1
+                    {%  if game.result is not None %}
+                    <span class="badge badge-secondary">
+                        {% if game.result == 0 %}0:1
                             {% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
+                    {% endif %}
                         <b>
                             {{ game.white_player.first_name }} {{ game.white_player.last_name }}
                             - {{ game.black_player.first_name }} {{ game.black_player.last_name }} </b>
                     </span>
                     <span>
-                         {{ game.preview |truncatechars: 80 }}
+                         {{ game.preview | truncatechars:80 }}
                     <span>
                 </a>
 
