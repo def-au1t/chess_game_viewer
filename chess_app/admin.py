@@ -21,7 +21,7 @@ class PgnAdd(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.save()
-        datas = get_data(obj.upload.path)
+        datas = get_data(obj.upload.path, request)
         pgns = datas['pgn']
         request.session['pgn'] = pgns
 

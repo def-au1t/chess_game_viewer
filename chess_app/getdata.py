@@ -5,13 +5,18 @@ import os
 
 from chess_app.models import Player, Tournament, PGN, Game, Parse
 from dateutil.parser import parse
+from decimal import Decimal
 
 
-def get_data(file):
+def get_data(file, request):
     pgn = open(file, encoding="utf-8-sig")
     pgns = []
 
     game = chess.pgn.read_game(pgn)
+    t_name = game.headers.get("Event", "?")
+    t_date = game.headers.get("EventDate", "????.??.??")
+    request.session['t_name'] = t_name
+    request.session['t_date'] = t_date
     while game is not None:
         pgns.append(str(game))
         game = chess.pgn.read_game(pgn)
@@ -27,7 +32,7 @@ def get_data(file):
     return meta
 
 
-def get_player_data(name):
+def get_player_data(name, team):
     if len(name) == 0 or name[0] == "?":
         last_name = "Nieznany"
         first_name = "Zawodnik"
@@ -38,14 +43,31 @@ def get_player_data(name):
         else:
             first_name = ""
     player, created = Player.objects.get_or_create(first_name=first_name, last_name=last_name)
+    if team != "?" and team is not None:
+        player.club = team
+        player.save()
     return player
 
 
-def get_tournament_data(game, date):
-    name = game.headers.get("Event", "?")
-
-    if name != "?":
-        tournament, created = Tournament.objects.get_or_create(name=name, date=date)
+def get_tournament_data(t_cd):
+    name = t_cd.get('name')
+    description = t_cd.get('description')
+    type = t_cd.get('type')
+    time = t_cd.get('time')
+    time_add = t_cd.get('time_add')
+    date = t_cd.get('date')
+    city = t_cd.get('city')
+    link = t_cd.get('link')
+    if name != "?" and name != "" and name is not None:
+        tournament, created = Tournament.objects.get_or_create(name=name)
+        tournament.date = date
+        tournament.description = description
+        tournament.type = type
+        tournament.time = Decimal(time)
+        tournament.time_add = Decimal(time_add)
+        tournament.city = city
+        tournament.link = link
+        tournament.save()
         return tournament
     else:
         return None
@@ -68,10 +90,10 @@ def get_game_data(white_player, black_player, tournament, pgn, game, date):
         round = float(round_str)
     Game.objects.get_or_create(white_player=white_player, black_player=black_player,
                                date=date, result=result, tournament=tournament,
-                               round=round, pgn=pgn, preview=str(game.mainline_moves())[0:60]+"...")
+                               round=round, pgn=pgn, preview=str(game.mainline_moves())[0:60] + "...")
 
 
-def parse_data(data):
+def parse_data(data, tournament):
     game = chess.pgn.read_game(io.StringIO(data))
     date_str = game.headers.get("Date", "?")
     try:
@@ -81,21 +103,18 @@ def parse_data(data):
             game.headers["Date"] = ""
     except ValueError:
         date = None
-        game.headers["Date"] = ""
-    event_date_str = game.headers.get("EventDate", "????.??.??")
-    try:
-        event_date = parse(event_date_str).date()
-        if event_date.year < 1950:
-            event_date = None
-            game.headers["EventDate"] = ""
-    except ValueError:
-        event_date = None
-        game.headers["EventDate"] = ""
+        eventDate =  game.headers.get("EventDate", "?")
+        if eventDate != "?":
+            date = eventDate
+            game.headers["Date"] = eventDate
+        else:
+            game.headers["Date"] = ""
     data = game
     pgn, created = PGN.objects.get_or_create(pgn=data)
     name = game.headers.get("White", "?").split(',')
-    white_player = get_player_data(name)
+    team = game.headers.get("WhiteTeam", "?")
+    white_player = get_player_data(name, team)
     name = game.headers.get("Black", "?").split(',')
-    black_player = get_player_data(name)
-    tournament = get_tournament_data(game, event_date)
+    team = game.headers.get("BlackTeam", "?")
+    black_player = get_player_data(name, team)
     get_game_data(white_player, black_player, tournament, pgn, game, date)
