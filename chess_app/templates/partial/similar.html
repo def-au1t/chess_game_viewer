@@ -2,7 +2,7 @@
   <div class="card-header">
 
 <b><div style="text-align: center;">
-    {% if type == 'tournament' %} Inne partie z tego turnieju:
+    {% if object.tournament %} Inne partie z tego turnieju:
     {% else %} Zobacz inne partie: {% endif %}</div></b>
   </div>
     <div class="list-group overflow-auto " style="max-height:600px">
@@ -14,7 +14,7 @@
                 <span class="">
 
                 <span class="badge badge-info">
-                    {% if type == 'tournament' %}Runda: {{ game.round }}
+                    {% if object.tournament %}Runda: {{ game.round }}
                     {% elif game.tournament is not null %} {{ game.tournament.date }}
                     {% else %} Turniej nieokreślony
                     {% endif %}
