@@ -21,7 +21,7 @@
     {%  if object.tournament %}
   <ul class="list-group list-group-flush"><strong>
      <li class="list-group-item d-flex justify-content-between align-items-center">
-         <span>{{ object.tournament.name }}</span><span>{{ object.date }}</span>
+         <span>{{ object.tournament.name }}</span><span>{% if object.date %} {{ object.date }} {% endif %}</span>
      </li></strong>
   </ul>
     {% endif %}

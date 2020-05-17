@@ -97,6 +97,7 @@ def parse_pgn(request):
     PgnFormSet = modelformset_factory(PGN, fields=('pgn',), extra=len(pgns))
 
     if request.method == 'POST':
+
         formset = PgnFormSet(request.POST)
 
         if formset.is_valid():
