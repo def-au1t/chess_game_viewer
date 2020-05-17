@@ -106,9 +106,11 @@
                         {% endif %}
                     <div class="">
                         <span class="badge badge-info">
-                            {% if game.tournament.type == 's' %}szachy szybkie:
-                            {% elif game.tournament.type == 'b' %}szachy błyskawiczne:
-                            {% else %}szachy klasyczne: {% endif %}
+                            {% if game.tournament.type == 's' %}szachy szybkie
+                            {% elif game.tournament.type == 'b' %}szachy błyskawiczne
+                            {% else %}szachy klasyczne {% endif %}
+                            {% if game.tournament.type and game.tournament.time and game.tournament.time_add %} :
+                                {% endif %}
                             {% if game.tournament.time and game.tournament.time_add %}
                                 P{{ game.tournament.time | floatformat }}'+{{ game.tournament.time_add | floatformat }}''
                             {% endif %}

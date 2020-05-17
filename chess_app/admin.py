@@ -27,3 +27,8 @@ class PgnAdd(admin.ModelAdmin):
 
 
 admin.site.register(Parse, PgnAdd)
+
+admin.site.site_title = "Panel administracyjny"
+admin.site.site_header = "Baza partii szachowych - Panel administratora"
+admin.site.index_title = "Baza partii szachowych - konfiguracja"
+
