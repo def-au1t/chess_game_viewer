@@ -75,41 +75,46 @@
 
     <div class="list-group ">
         {% for game in object_list %}
-            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+            <a class="list-group-item list-group-item-action d-flex flex-row justify-content-between "
                href="{% url 'chess_viewer:game' game.id %}">
-            <span class="">
-                <div class="">
-                    <b> {{ game.white_player.first_name }} {{ game.white_player.last_name }}
-                                - {{ game.black_player.first_name }} {{ game.black_player.last_name }}
-                        </b>
+                <div id ="left" class="d-flex flex-column align-items-baseline">
+                    <div class="">
+                        <b> {{ game.white_player.first_name }} {{ game.white_player.last_name }}
+                                    - {{ game.black_player.first_name }} {{ game.black_player.last_name }}
+                            </b>
+                    </div>
+                    {% if game.preview %}
+                        <div class=""> {{ game.preview |truncatechars:60 }}</div>
+                    {% endif %}
+                    {% if game.result is not None %}
+                    <div class="badge badge-secondary">{% if game.result == 0 %}0:1
+                        {% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</div>
+                    {% endif %}
                 </div>
-                {% if game.preview %}
-                    <div class=""> {{ game.preview |truncatechars:60 }}</div>
-                {% endif %}
-                {% if game.result %}
-                <span class="badge badge-secondary">{% if game.result == 0 %}0:1
-                    {% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
-                {% endif %}
-            </span>
 
                 {% if game.tournament %}
-                    <span class="text-right">
-                <div class=""><b>{{ game.tournament.name |truncatechars:100 }}</b></div>
-                <div class=""><b>
-                    {% if game.date %}
-                        {{ game.date }}{% endif %}</b>
-                </div>
-                <div class="">
-                    <span class="badge badge-info">
-                        {% if game.tournament.type == 's' %}szachy szybkie:
-                        {% elif game.tournament.type == 'b' %}szachy błyskawiczne:
-                        {% else %}szachy klasyczne: {% endif %}
-                        {% if game.tournament.time and game.tournament.time_add %}
-                            P{{ game.tournament.time | floatformat }}'+{{ game.tournament.time_add | floatformat }}''
+                <div id="right" class="d-flex flex-column align-items-end">
+                    <div class=""><b>{{ game.tournament.name |truncatechars:100 }}</b></div>
+                        {% if game.date %}
+                            <div class=""><b>
+                                    {{ game.date }}</b>
+                            </div>
+                        {% elif game.tournament.date %}
+                            <div class=""><b>
+                                {{ game.tournament.date }}</b>
+                            </div>
                         {% endif %}
-                    </span>
+                    <div class="">
+                        <span class="badge badge-info">
+                            {% if game.tournament.type == 's' %}szachy szybkie:
+                            {% elif game.tournament.type == 'b' %}szachy błyskawiczne:
+                            {% else %}szachy klasyczne: {% endif %}
+                            {% if game.tournament.time and game.tournament.time_add %}
+                                P{{ game.tournament.time | floatformat }}'+{{ game.tournament.time_add | floatformat }}''
+                            {% endif %}
+                        </span>
+                    </div>
                 </div>
-            </span>
                 {% endif %}
             </a>
         {% empty %}
