@@ -22,11 +22,17 @@ class Tournament(models.Model):
 
     models.DateField.register_lookup(OnlyYearAndMonth)
 
+    def __str__(self):
+        return self.name
+
 
 class Player(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     club = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return self.first_name+' '+self.last_name
 
 
 class PGN(models.Model):
@@ -43,4 +49,6 @@ class Game(models.Model):
     pgn = models.ForeignKey(PGN, on_delete=models.CASCADE, null=True)
     preview = models.TextField(max_length=100, null=True)
 
+    def __str__(self):
+        return self.white_player.first_name+' '+self.white_player.last_name +":"+self.black_player.first_name+' '+self.black_player.last_name+' id:'+str(self.id)
 
