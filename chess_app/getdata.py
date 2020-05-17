@@ -92,7 +92,7 @@ def get_game_data(white_player, black_player, tournament, pgn, game, date):
         round = float(round_str)
     Game.objects.get_or_create(white_player=white_player, black_player=black_player,
                                date=date, result=result, tournament=tournament,
-                               round=round, pgn=pgn, preview=str(game.mainline_moves())[0:60] + "...")
+                               round=round, pgn=pgn, preview=str(game.mainline_moves())[0:100] + "...")
 
 
 def parse_data(data, tournament):
