@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.forms import modelformset_factory
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 from django_filters.views import FilterView
@@ -143,3 +144,12 @@ def parse_pgn(request):
                                          'time': time, 'time_add': time_add, 'type': type, 'link': link})
         formset = PgnFormSet(queryset=PGN.objects.none(), initial=[{'pgn': x} for x in pgns])
         return render(request, 'parser.html', {'t_form': t_form, 'formset': formset})
+
+
+def download_pgn(request, pgn_id):
+    file = PGN.objects.get(id=pgn_id).pgn
+    response = HttpResponse(file, content_type='application/text')
+    response['Content-Disposition'] = 'attachment; filename="game.pgn"'
+    return response
+
+

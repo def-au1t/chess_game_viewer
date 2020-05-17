@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import GamesList, GameDetails, TournamentsList, TournamentDetails, parse_pgn
+from .views import GamesList, GameDetails, TournamentsList, TournamentDetails, parse_pgn, download_pgn
 
 urlpatterns = [
     path('', GamesList.as_view(), name='index'),
@@ -7,4 +7,5 @@ urlpatterns = [
     path('tournaments/', TournamentsList.as_view(), name='tournaments'),
     path('tournament/<int:pk>', TournamentDetails.as_view(), name='tournament'),
     path('parser/', parse_pgn, name='parser'),
+    path('pgn/<int:pgn_id>', download_pgn, name='pgn'),
 ]
