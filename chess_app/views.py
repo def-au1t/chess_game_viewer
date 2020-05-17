@@ -3,10 +3,11 @@ from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 from django_filters.views import FilterView
-
+from .forms import TournamentForm
 from .filters import TournamentsListFilter, GamesListFilter
-from .getdata import parse_data
+from .getdata import parse_data, get_tournament_data
 from .models import Tournament, Game, PGN
+from dateutil.parser import parse
 
 
 class TournamentsList(FilterView):
@@ -93,20 +94,34 @@ class GameDetails(DetailView):
 def parse_pgn(request):
     pgns = request.session.get('pgn')
     PgnFormSet = modelformset_factory(PGN, fields=('pgn',), extra=len(pgns))
+    t_name = request.session.get("t_name")
+    if t_name == "?":
+        t_name = None
+    t_date_str = request.session.get("t_date")
+    try:
+        t_date = parse(t_date_str).date()
+        if t_date.year < 1950:
+            t_date = None
+    except ValueError:
+        t_date = None
 
     if request.method == 'POST':
-
+        t_form = TournamentForm(request.POST)
         formset = PgnFormSet(request.POST)
-
-        if formset.is_valid():
+        if formset.is_valid() and t_form.is_valid():
+            t_cd = t_form.cleaned_data
+            tournament = get_tournament_data(t_cd)
             for f in formset:
                 cd = f.cleaned_data
                 data = cd.get('pgn')
-                parse_data(data)
+                parse_data(data, tournament)
             request.session['pgn'] = ""
+            request.session['t_name'] = ""
+            request.session['t_date'] = ""
             return redirect('/admin/chess_app/pgn')
 
-        return render(request, 'parser.html', {'formset': formset})
+        return render(request, 'parser.html', {'t_form': t_form, 'formset': formset})
     else:
+        t_form = TournamentForm(initial={'name': t_name, 'date': t_date})
         formset = PgnFormSet(queryset=PGN.objects.none(), initial=[{'pgn': x} for x in pgns])
-        return render(request, 'parser.html', {'formset': formset})
+        return render(request, 'parser.html', {'t_form': t_form, 'formset': formset})
