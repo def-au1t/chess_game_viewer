@@ -56,7 +56,7 @@
                             - {{ game.black_player.first_name }} {{ game.black_player.last_name }} </b>
                     </span>
                     <span>
-                         {{ game.preview }}
+                         {{ game.preview |truncatechars: 80 }}
                     <span>
                 </a>
 
