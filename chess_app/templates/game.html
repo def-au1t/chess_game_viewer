@@ -21,11 +21,11 @@
     {%  if object.tournament %}
   <ul class="list-group list-group-flush"><strong>
      <li class="list-group-item d-flex justify-content-between align-items-center">
-         <span>{{ object.tournament.name }}</span><span>{{ object.tournament.date }}</span>
+         <span>{{ object.tournament.name }}</span><span>{% if object.date %} {{ object.date }} {% endif %}</span>
      </li></strong>
   </ul>
     {% endif %}
-<div class="d-flex align-items-center"><iframe class="mx-auto mt-3" height='600' width='{% if not request.user_agent.is_mobile %}600 {% else %}330{%  endif %}' frameborder='0' scrolling='yes' marginheight='0' marginwidth='0' src='http://pgn4web-board.casaschi.net/?delay=1000&amp;
+<div class="d-flex align-items-center"><iframe class="mx-auto mt-3" height='700' width='{% if not request.user_agent.is_mobile %}600 {% else %}330{%  endif %}' frameborder='0' scrolling='yes' marginheight='0' marginwidth='0' src='http://pgn4web-board.casaschi.net/?delay=1000&amp;
 pieceFont=uscf&amp;
 {% if not request.user_agent.is_mobile %}
 pieceSize=40&amp;&amp;
@@ -43,7 +43,7 @@ fontMovesSize=80pct&amp;
 fontCommentsSize=80pct&amp;
 autoplayMode=game&amp;
 delay=3000&amp;
-frameHeight=600&amp;
+frameHeight=700&amp;
 frameWidth={% if not request.user_agent.is_mobile %}550 {% else %}330{%  endif %}&amp;
 pgnText={{ game.pgn.pgn }}'
         >
@@ -55,8 +55,9 @@ pgnText={{ game.pgn.pgn }}'
 </div>
 
   </div>
-<div class="col-12 col-xl-5">
+<div class="col-12 col-xl-5 d-flex flex-column align-items-center">
 {% include "partial/similar.html" %}
+<a class="btn btn-light m-3 btn-outline-info align-self-stretch" href="{% url 'chess_viewer:pgn' object.pgn.id %}">Pobierz partię</a>
 </div>
 </div>
 

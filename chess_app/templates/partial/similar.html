@@ -1,11 +1,11 @@
-<div class="card my-3">
+<div class="card my-3 w-100">
   <div class="card-header">
 
 <b><div style="text-align: center;">
-    {% if type == 'tournament' %} Inne partie z tego turnieju:
+    {% if object.tournament %} Inne partie z tego turnieju:
     {% else %} Zobacz inne partie: {% endif %}</div></b>
   </div>
-    <div class="list-group">
+    <div class="list-group overflow-auto " style="max-height:600px">
         {% for game in similar_games %}
             <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center
 {% if game.id == current_game_id %} list-group-item-secondary {% endif %}"
@@ -14,7 +14,7 @@
                 <span class="">
 
                 <span class="badge badge-info">
-                    {% if type == 'tournament' %}Runda: {{ game.round }}
+                    {% if object.tournament %}Runda: {{ game.round }}
                     {% elif game.tournament is not null %} {{ game.tournament.date }}
                     {% else %} Turniej nieokreślony
                     {% endif %}
@@ -25,9 +25,11 @@
                 </span>
 
                 <span>
+                {% if game.result is not None %}
                 <span class="badge badge-secondary">{% if game.result == 0 %}0:1
-                        {% elif game.result == 0.5 %}&frac12;:&frac12;{% else %}1:0{% endif %}</span>
+                        {% elif game.result == 0.5 %}&frac12;:&frac12;{% elif game.result == 1 %}1:0{% endif %}</span>
                 </span>
+                {% endif %}
             </a>
         {% endfor %}
     </div>

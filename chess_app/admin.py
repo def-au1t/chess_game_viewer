@@ -21,9 +21,14 @@ class PgnAdd(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.save()
-        datas = get_data(obj.upload.path)
+        datas = get_data(obj.upload.path, request)
         pgns = datas['pgn']
         request.session['pgn'] = pgns
 
 
 admin.site.register(Parse, PgnAdd)
+
+admin.site.site_title = "Panel administracyjny"
+admin.site.site_header = "Baza partii szachowych - Panel administratora"
+admin.site.index_title = "Baza partii szachowych - konfiguracja"
+
