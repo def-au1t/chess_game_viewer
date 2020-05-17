@@ -12,7 +12,7 @@ from .models import Tournament, Game, PGN
 class TournamentsList(FilterView):
     model = Tournament
     template_name = "../templates/tournament_list.html"
-    paginate_by = 1  # TODO: change this later
+    paginate_by = 5 # TODO: change this later
     ordering = ['-date']
 
     filterset_class = TournamentsListFilter
