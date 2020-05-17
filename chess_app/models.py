@@ -34,6 +34,9 @@ class Player(models.Model):
     def __str__(self):
         return self.first_name+' '+self.last_name
 
+    def __str__(self):
+        return self.first_name+' '+self.last_name
+
 
 class PGN(models.Model):
     pgn = models.TextField(max_length=5000)
@@ -53,4 +56,6 @@ class Game(models.Model):
         return self.white_player.first_name + ' ' + self.white_player.last_name + ":" + self.black_player.first_name + ' ' + self.black_player.last_name + ' id:' + str(
             self.id)
 
+    def __str__(self):
+        return self.white_player.first_name+' '+self.white_player.last_name +":"+self.black_player.first_name+' '+self.black_player.last_name+' id:'+str(self.id)
 
