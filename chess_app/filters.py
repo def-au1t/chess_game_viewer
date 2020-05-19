@@ -23,12 +23,11 @@ class GamesListFilter(django_filters.FilterSet):
     class Meta:
         model = Game
         fields = {
-            "tournament__date": ["ym"],
+            "date": ["ym"],
             "tournament__name": ["icontains"],
             "tournament__type": ["exact"],
             "name_filter": ["name_filter"],
             "club_filter": ["club_filter"]
-
         }
 
 

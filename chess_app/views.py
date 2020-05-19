@@ -99,6 +99,7 @@ def parse_pgn(request):
     PgnFormSet = modelformset_factory(PGN, fields=('pgn',), extra=len(pgns))
     t_name = request.session.get("t_name")
     tmp_tournament, created = Tournament.objects.get_or_create(name=t_name)
+
     if not created:
         description = tmp_tournament.description
         time = tmp_tournament.time
@@ -111,12 +112,16 @@ def parse_pgn(request):
         time_add = 0
         type = ""
         link = ""
+
     if t_name == "?":
         t_name = None
+
     t_date_str = request.session.get("t_date")
     t_city = request.session.get("t_city")
+
     if t_city == "?":
         t_city = None
+
     try:
         t_date = parse(t_date_str).date()
         if t_date.year < 1950:
@@ -132,8 +137,12 @@ def parse_pgn(request):
             tournament = get_tournament_data(t_cd)
             for f in formset:
                 cd = f.cleaned_data
+                if not cd:
+                    continue
+
                 data = cd.get('pgn')
                 parse_data(data, tournament)
+
             request.session['pgn'] = ""
             request.session['t_name'] = ""
             request.session['t_date'] = ""

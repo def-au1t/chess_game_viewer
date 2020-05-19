@@ -41,9 +41,9 @@ class TournamentForm(forms.ModelForm):
             'type': forms.Select(choices=TYPE_CHOICES, attrs={'class': 'form-control'}),
             'time': forms.NumberInput(attrs={'class': 'form-control', 'step': "0.01"}),
             'time_add': forms.NumberInput(attrs={'class': 'form-control', 'step': "0.01"}),
-            'date': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control',
-                                           'placeholder': 'Select a date',
-                                           'type': 'date'}),
+            'date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control',
+                                                              'placeholder': 'Select a date',
+                                                              'type': 'date'}),
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'link': forms.TextInput(attrs={'class': 'form-control'}),
         }
