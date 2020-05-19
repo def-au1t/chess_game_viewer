@@ -135,7 +135,6 @@ def parse_pgn(request):
         if formset.is_valid() and t_form.is_valid():
             t_cd = t_form.cleaned_data
             tournament = get_tournament_data(t_cd)
-            # TODO: zero len formset list handle
             for f in formset:
                 cd = f.cleaned_data
                 if not cd:
