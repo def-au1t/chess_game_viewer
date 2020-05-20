@@ -109,8 +109,15 @@ def parse_data(data, tournament):
         if eventDate != "?":
             date = eventDate
             game.headers["Date"] = eventDate
+        elif tournament and tournament.date:
+            date = tournament.date
+            game.headers["Date"] = tournament.date
         else:
             game.headers["Date"] = ""
+            date = None
+    if tournament and not tournament.date and date:
+        tournament.date = date
+        tournament.save()
     data = game
     pgn, created = PGN.objects.get_or_create(pgn=data)
     name = game.headers.get("White", "?").split(',')

@@ -9,16 +9,14 @@
         {% endif %}
         {% page_range page_obj.number page_obj.paginator.num_pages as trimmed_pages %}
         {% for i in trimmed_pages %}
-            {% if forloop.counter0 < 10 %}
-                {% if page_obj.number == i %}
-                    <li class="active page-item">
-                        <a style="background-color: #17a2b8" class="page-link">{{ i }}</a>
-                    </li>
-                {% else %}
-                    <li class="page-item">
-                        <a class="page-link" href="?{% url_replace request 'page' i %}">{{ i }}</a>
-                    </li>
-                {% endif %}
+            {% if page_obj.number == i %}
+                <li class="active page-item">
+                    <a style="background-color: #17a2b8" class="page-link">{{ i }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% url_replace request 'page' i %}">{{ i }}</a>
+                </li>
             {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}

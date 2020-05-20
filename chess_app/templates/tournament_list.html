@@ -90,11 +90,17 @@
 
 
                 <span class="text-right">
-                <div class="">{% if tournament.city %}{{ tournament.city }}{% endif %} - <b>{% if tournament.date %}
+                <div class="">{% if tournament.city %}{{ tournament.city }}{% endif %}
+                    {% if tournament.city and tournament.date %} - {% else %} &nbsp; {% endif %}
+                        {% if tournament.date %}<b>
                     {{ tournament.date }}{% endif %}</b></div>
                 <div class="">
-                    <span class="badge badge-info">{% if tournament.type == 's' %}szachy szybkie:
-                    {% elif tournament.type == 'b' %}szachy błyskawiczne: {% else %}szachy klasyczne: {% endif %}
+                    <span class="badge badge-info">{% if tournament.type == 's' %}szachy szybkie
+                    {% elif tournament.type == 'b' %}szachy błyskawiczne
+                    {% else %} szachy klasyczne
+                    {% endif %}
+                    {% if tournament.time and tournament.time_add and tournament.type == 'k' or tournament.type == 's' or tournament.type == 'b' %}:
+                    {% endif %}
                         {% if tournament.time and tournament.time_add %}
                             P{{ tournament.time | floatformat }}'+{{ tournament.time_add | floatformat }}''
                         {% endif %}
