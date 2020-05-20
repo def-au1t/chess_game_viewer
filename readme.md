@@ -35,6 +35,7 @@ App allows the following things:
 
 - `pip install -r requirements.txt`
 - create `.env` file in `chess_game_viewer` folder with the following content:
+
     ```bash
     export DB_HOST=<your db details here>
     export DB_PORT=<...>
