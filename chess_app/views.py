@@ -106,9 +106,13 @@ def parse_pgn(request):
     pgns = request.session.get('pgn')
     PgnFormSet = modelformset_factory(PGN, fields=('pgn',), extra=len(pgns))
     t_name = request.session.get("t_name")
-    tmp_tournament, created = Tournament.objects.get_or_create(name=t_name)
+    if t_name is not None and t_name != "" and t_name != "?":
+        tmp_tournament, created = Tournament.objects.get_or_create(name=t_name)
+    else:
+        created = False
+        tmp_tournament = None
 
-    if not created:
+    if created and tmp_tournament:
         description = tmp_tournament.description
         time = tmp_tournament.time
         time_add = tmp_tournament.time_add
