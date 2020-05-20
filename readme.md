@@ -17,19 +17,19 @@ App allows the following things:
 
 ### Games list:
 
-## ![s1](s1.png)
+## ![s1](img/s1.png)
 
 ### Tournaments list:
 
-![s2](s2.png)
+![s2](img/s2.png)
 
 ### Tournament details view:
 
-![s3](s3.png)
+![s3](img/s3.png)
 
 ### Game view:
 
-![s4](s4.png)
+![s4](img/s4.png)
 
 ## Build instructions
 
