@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -9,13 +9,14 @@ from .filters import TournamentsListFilter, GamesListFilter
 from .getdata import parse_data, get_tournament_data
 from .models import Tournament, Game, PGN
 from dateutil.parser import parse
+from django.db.models import F
 
 
 class TournamentsList(FilterView):
     model = Tournament
     template_name = "../templates/tournament_list.html"
-    paginate_by = 5 # TODO: change this later
-    ordering = ['-date']
+    paginate_by = 10
+    ordering = [F('date').desc(nulls_last=True), '-id']
 
     filterset_class = TournamentsListFilter
 
@@ -58,7 +59,7 @@ class GamesList(FilterView):
     model = Game
     template_name = "../templates/game_list.html"
     paginate_by = 10
-    ordering = ['id']
+    ordering = ['-id']
 
     filterset_class = GamesListFilter
 
@@ -78,22 +79,29 @@ class GameDetails(DetailView):
     template_name = "../templates/game.html"
 
     def get_context_data(self, **kwargs):
-        similar_games = list(Game.objects.filter(tournament_id=self.object.tournament_id).order_by("round"))
 
-        if len(similar_games) < 2:
+        similar_random = False
+        similar_games = []
+
+        if self.object.tournament_id:
+            similar_games = list(Game.objects.filter(tournament_id=self.object.tournament_id).order_by("round"))
+
+        if not self.object.tournament_id or len(similar_games) < 2:
             similar_games = list(Game.objects.exclude(id=self.object.id).order_by('?')[:5])
             if(len(similar_games)) > 0:
                 similar_games[0] = self.object
+            similar_random = True
 
         current_game_id = self.object.id
         context = super(GameDetails, self).get_context_data(
             similar_games=similar_games,
             current_game_id=current_game_id,
+            similar_random=similar_random,
             **kwargs)
         return context
 
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url='/admin/login/')
 def parse_pgn(request):
     pgns = request.session.get('pgn')
     PgnFormSet = modelformset_factory(PGN, fields=('pgn',), extra=len(pgns))
