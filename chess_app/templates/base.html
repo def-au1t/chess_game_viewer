@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>  {% block title %}Baza partii szachowych  {% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}"/>
     <style>
         html {
   position: relative;
@@ -29,7 +29,7 @@ body {
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   </a>
     <a class="navbar-brand" href="{% url 'chess_viewer:index' %}">
-    <img class="d-inline-block align-top mr-3" src={% static 'img/logo.png' %} width="30" height="30" alt="">
+    <img class="d-inline-block align-top mr-3" src={% static 'images/logo.png' %} width="30" height="30" alt="">
         Baza partii szachowych</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

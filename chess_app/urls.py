@@ -3,6 +3,8 @@ from django.urls import path
 
 from chess_game_viewer import settings
 from .views import GamesList, GameDetails, TournamentsList, TournamentDetails, parse_pgn, download_pgn
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('', GamesList.as_view(), name='index'),
@@ -10,5 +12,7 @@ urlpatterns = [
     path('tournaments/', TournamentsList.as_view(), name='tournaments'),
     path('tournament/<int:pk>', TournamentDetails.as_view(), name='tournament'),
     path('parser/', parse_pgn, name='parser'),
-    path('pgn/<int:pgn_id>', download_pgn, name='pgn')
+    path('pgn/<int:pgn_id>', download_pgn, name='pgn'),
+    path('board', TemplateView.as_view(template_name="board.html"),
+                   name='board'),
 ]
