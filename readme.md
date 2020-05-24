@@ -31,6 +31,10 @@ App allows the following things:
 
 ![s4](img/s4.png)
 
+## Working example
+
+https://chess-database.herokuapp.com/
+
 ## Build instructions
 
 - `pip install -r requirements.txt`
