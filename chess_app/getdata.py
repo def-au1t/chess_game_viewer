@@ -105,7 +105,7 @@ def parse_data(data, tournament):
             game.headers["Date"] = ""
     except ValueError:
         date = None
-        eventDate =  game.headers.get("EventDate", "?")
+        eventDate = game.headers.get("EventDate", "?")
         if eventDate != "?":
             date = eventDate
             game.headers["Date"] = eventDate

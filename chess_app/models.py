@@ -1,10 +1,11 @@
 from django.db import models
 
 from chess_app.lookups import OnlyYearAndMonth
+from django.core.validators import FileExtensionValidator
 
 
 class Parse(models.Model):
-    upload = models.FileField(upload_to="")
+    upload = models.FileField(upload_to="", validators=[FileExtensionValidator(['pgn'])])
 
     def __str__(self):
         return '%s' % (self.upload)
@@ -32,7 +33,7 @@ class Player(models.Model):
     club = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return self.first_name+' '+self.last_name
+        return self.first_name + ' ' + self.last_name
 
 
 class PGN(models.Model):
@@ -52,4 +53,3 @@ class Game(models.Model):
     def __str__(self):
         return self.white_player.first_name + ' ' + self.white_player.last_name + ":" + self.black_player.first_name + ' ' + self.black_player.last_name + ' id:' + str(
             self.id)
-
