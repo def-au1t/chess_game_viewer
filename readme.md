@@ -35,6 +35,10 @@ App allows the following things:
 
 https://chess-database.herokuapp.com/
 
+## Code guide
+
+[Code guide](code_guide.md)
+
 ## Build instructions
 
 - `pip install -r requirements.txt`
