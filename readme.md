@@ -45,14 +45,18 @@ https://chess-database.herokuapp.com/
 - create `.env` file in `chess_game_viewer` folder with the following content:
 
     ```bash
-    export DB_HOST=<your db details here>
+    export DB_HOST=<"your db details here">
     export DB_PORT=<...>
     export DB_USER=<...>
     export DB_PASS=<...>
     export DB_NAME=<...>
-    export SECRET_KEY=<your python secret key>
+    export PAGE_NAME=<"your site name in footer">
+    export SECRET_KEY=<"your python secret key">
     ```
-- `python manage.py runserver`
+- `python manage.py migrate && python manage.py runserver`
+- create admin panel account via: `python manage.py createsuperuser`
+
+Optionally, you can use provided Dockerfile to build docker image.
 
 ## Authors
 
