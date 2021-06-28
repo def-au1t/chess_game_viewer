@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import whitenoise
 
 from dotenv import load_dotenv
 
@@ -28,12 +27,9 @@ MEDIA_URL = '/media/'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "b7&a@lfr8mgrv=m*x595c&sirsdfb#!%4m#az#a&$j^53w=b")
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
-
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ["localhost", "127.0.0.1"])
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -66,7 +62,8 @@ ROOT_URLCONF = 'chess_game_viewer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,7 +71,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'chess_game_viewer.context_processors.export_vars',
             ],
         },
     },

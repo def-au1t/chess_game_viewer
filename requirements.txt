@@ -1,6 +1,6 @@
 ﻿python-chess>=0.30.1
 asgiref>=3.2.5
-Django==3.0.6
+Django>=3.0.5
 psycopg2>=2.8.4
 python-dotenv>=0.12.0
 python-dateutil>=2.8.1
@@ -10,5 +10,6 @@ sqlparse>=0.3.1
 django-user-agents>=0.4.0
 django-filter==2.2.0
 django-widget-tweaks>=1.4.8
-whitenoise>=5.1.0
-gunicorn>=20.1.0
+gunicorn
+django-heroku
+whitenoise
