@@ -1,6 +1,6 @@
 ﻿python-chess>=0.30.1
 asgiref>=3.2.5
-Django==3.0.6
+Django==3.1.12
 psycopg2>=2.8.4
 python-dotenv>=0.12.0
 python-dateutil>=2.8.1
