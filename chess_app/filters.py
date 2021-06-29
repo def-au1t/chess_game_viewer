@@ -1,3 +1,5 @@
+import datetime
+
 import django_filters
 from django.db.models import Q
 
@@ -17,19 +19,22 @@ class TournamentsListFilter(django_filters.FilterSet):
 
 
 class GamesListFilter(django_filters.FilterSet):
+    date_filter = django_filters.DateFilter(method='date_filter_method')
+    tournament__type = django_filters.CharFilter(field_name='tournament', lookup_expr='type__exact')
+    tournament__name = django_filters.CharFilter(field_name='tournament', lookup_expr='name__icontains')
     name_filter = django_filters.CharFilter(method='name_filter_method')
     club_filter = django_filters.CharFilter(method='club_filter_method')
 
     class Meta:
         model = Game
-        fields = {
-            "date": ["ym"],
-            "tournament__name": ["icontains"],
-            "tournament__type": ["exact"],
-            "name_filter": ["name_filter"],
-            "club_filter": ["club_filter"]
-        }
+        fields = ['name_filter', 'date_filter', 'date', 'tournament__type', 'tournament__name']
 
+
+    def date_filter_method(self, queryset, name, value: datetime.date):
+        return queryset.filter(
+            Q(date__year__exact=value.year) &
+            Q(date__month__exact=value.month)
+        )
 
     def name_filter_method(self, queryset, name, value):
         return queryset.filter(

@@ -134,3 +134,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'chess_app/static')]
 
 X_FRAME_OPTIONS = 'ALLOWALL'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

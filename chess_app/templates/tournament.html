@@ -9,13 +9,13 @@
     <span class="text-center">
     <h1 class="mb-3">{{ object.name }} </h1>
 
-    {% if object.description %} <div class="">{{ object.description }}</div> {% endif %}
+    {% if object.description  %} <div class="">{{ object.description }}</div> {% endif %}
     </span>
 
     </div>
     <table class="table">
       <tbody>
-        {% if object.date or object.city %}
+        {% if object.date is not None or object.city is not None %}
         <tr>
           <th scope="row"> Data i miejsce: </th>
           <td> {% if object.date%}{{ object.date }}{% endif %}
@@ -23,7 +23,7 @@
               {% if object.city%}{{ object.city }}{% endif %} </td>
         </tr>
         {% endif %}
-        {% if object.time and object.time_add %}
+        {% if object.time > 0 and object.time_add is not None %}
         <tr>
           <th scope="row">Tempo gry:</th>
           <td>P{{ object.time | floatformat }}'+{{ object.time_add | floatformat }}''/pos.</td>

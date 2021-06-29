@@ -25,12 +25,16 @@
      </li></strong>
   </ul>
     {% endif %}
-<div class="d-flex align-items-center"><iframe class="mx-auto mt-3" height='700' width='{% if not request.user_agent.is_mobile %}600 {% else %}330{%  endif %}' frameborder='0' scrolling='yes' marginheight='0' marginwidth='0' src='{% url 'chess_viewer:board' %}?
+<div class="d-flex align-items-center"><iframe class="mx-auto mt-3" height='750' width='{% if not request.user_agent.is_mobile %}600 {% else %}350{%  endif %}' frameborder='0' scrolling='yes' marginheight='0' marginwidth='0' src='{% url 'chess_viewer:board' %}?
 pieceFont=uscf&amp;
 {% if not request.user_agent.is_mobile %}
-pieceSize=40&amp;&amp;
-squareSize=50&amp;
+pieceSize=56&amp;&amp;
+squareSize=64&amp;
+{% else %}
+pieceSize=38&amp;&amp;
+squareSize=43&amp;
 {% endif %}
+
 lightColorHex=FFCC99&amp;
 darkColorHex=CC9966&amp;
 highlightMode=border&amp;
@@ -43,8 +47,8 @@ fontMovesSize=80pct&amp;
 fontCommentsSize=80pct&amp;
 autoplayMode=game&amp;
 delay=3000&amp;
-frameHeight=700&amp;
-frameWidth={% if not request.user_agent.is_mobile %}550 {% else %}330{%  endif %}&amp;
+frameHeight=750&amp;
+frameWidth={% if not request.user_agent.is_mobile %}550 {% else %}350{%  endif %}&amp;
 pgnText={{ game.pgn.pgn }}'
         >
 
