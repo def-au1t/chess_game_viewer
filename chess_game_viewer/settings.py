@@ -29,7 +29,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = os.environ.get("SECRET_KEY", "b7&a@lfr8mgrv=m*x595c&sirsdfb#!%4m#az#a&$j^53w=b")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ["localhost", "127.0.0.1"])
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", os.environ.get('HOST', '')]
 # Application definition
 
 INSTALLED_APPS = [
