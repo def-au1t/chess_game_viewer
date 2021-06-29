@@ -80,6 +80,9 @@ WSGI_APPLICATION = 'chess_game_viewer.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+import environ
+env = environ.Env()
+
 
 DATABASES = {
     'default': {
@@ -91,6 +94,11 @@ DATABASES = {
         'PORT': os.getenv("DB_PORT"),
     }
 }
+
+if 'DATABASE_URL' in env:
+    DATABASES["default"] = env.db("DATABASE_URL")  # noqa F405
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
+    DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
